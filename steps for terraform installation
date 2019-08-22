@@ -1,1 +1,11 @@
+This is installation steps for terraform and AWS CLI
+Prerequiste :
+we need to have python 2.7 or above version
+Step1:
+Install AWS cli package from the below web page
+https://docs.aws.amazon.com/cli/latest/userguide/install-macos.html
+Step2:
+Install Terraform package in the required system
 
+https://www.terraform.io/downloads.html
+https://www.terraform.io/docs/configuration-0-11/interpolation.html
