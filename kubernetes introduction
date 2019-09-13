@@ -1,3 +1,10 @@
 This file is about introduction about Kubernetes architecture
 etcd is a service which store information about Nodes pod configs ,secrets,accounts,roles,bindings and etc
 etcd will run as a service and it will run as port of 2379
+Kube api server perform below operation
+a)Authenticate user
+b)Validate request
+c)Retrieve data
+d)update etcd
+e)Scheduler
+f)Kubelet
