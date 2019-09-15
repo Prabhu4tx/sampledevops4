@@ -32,3 +32,6 @@ key-value store :
   4)update etcd
   5) Scheduler
 
+Kubectl commands
+to create a pod
+kubctl run nginx --image=nginx --generator=run-pod/v1
