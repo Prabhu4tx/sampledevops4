@@ -34,4 +34,11 @@ key-value store :
 
 Kubectl commands
 to create a pod
-kubctl run nginx --image=nginx --generator=run-pod/v1
+kubectl run nginx --image=nginx --generator=run-pod/v1
+Replicaset:
+ kubectl create -f replicaset-definition.yml
+ kubectl get replicaset
+ kubectl delete replicaset myapp-replicaset
+ kubectl replace -f replicaset-definition.yml
+ kubectl scale -replicas=6 -f replicaset-definition.yml
+
