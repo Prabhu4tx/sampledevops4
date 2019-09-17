@@ -42,3 +42,9 @@ Replicaset:
  kubectl replace -f replicaset-definition.yml
  kubectl scale -replicas=6 -f replicaset-definition.yml
 
+Services:
+  Nodeport
+  ClusterIP'
+  Load Balancer
+  NodePort: a service can map up by a port to node and port to service
+ Nodeport(30008)-->service(80) -->pod(80)
