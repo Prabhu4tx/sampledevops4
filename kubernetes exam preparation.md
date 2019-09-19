@@ -48,3 +48,33 @@ Services:
   Load Balancer
   NodePort: a service can map up by a port to node and port to service
  Nodeport(30008)-->service(80) -->pod(80)
+
+Taint and Tolerant
+Taint is for node
+Tolerant is for pod
+By Default Master is set as Taint 
+kubectl taint nodes node01 key=value:taint-effect
+three type of taint-effect
+1)NoSchedule
+2)PreferNoSchedule
+3)Noexecute
+kubectl taint nodes node1 app=blue:NoSchedule
+
+e.g) Tolerantions syntax in pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+spec:
+  containers:
+  - name: nginx-controller
+    image: nginx
+  tolerations:
+  - key:"app"
+    operator:"Equal"
+    value:"blue"
+    effect:"NoSchedule"
+===========================
+
+
+
