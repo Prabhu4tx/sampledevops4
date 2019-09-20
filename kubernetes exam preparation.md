@@ -75,6 +75,15 @@ spec:
     value:"blue"
     effect:"NoSchedule"
 ===========================
-
+Node Selector:
+ The concept of node is to assign a pod to particular using selector and mapping the label of particular node with key:value mapping
+ e.g)
+ Node changes
+ kubectl label node <nodename> size=large
+  and in the pod template
+  pod level changes
+    nodeSelector:
+        size: large
+      
 
 
