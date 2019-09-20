@@ -79,11 +79,44 @@ Node Selector:
  The concept of node is to assign a pod to particular using selector and mapping the label of particular node with key:value mapping
  e.g)
  Node changes
+ ==============
  kubectl label node <nodename> size=large
   and in the pod template
   pod level changes
     nodeSelector:
         size: large
-      
-
+ Node Affinity:
+ ==============================
+   pods are hosted on particular node
+   Using Node selector we cannot use the condition such as Large or Medium or Not small
+Node Affinity provide the feature for assign a pod in a particular node
+ 
+ under pod spec:
+   affinity:
+     nodeAffinity
+       requiredDuringSchedulingIgnoreDuringExecution:
+         nodeSelectorTerms:
+         - matchExpressions:
+           - key: size
+              operator: In
+             values:
+              - Large
+              - Medium
+              
+  Node Affinity Types:
+  Available
+  requiredDuringSchedulingIgnoredDuringExecution
+  prefferedDuringSchedulingIgnoredDuringExecution
+  
+  planned:
+  requireDuringSchedulingRequiredDuringExecution
+  preferredDuringSchedulingRequiredDuringExecution
+              
+       
+       
+       
+       
+       
+       
+        
 
