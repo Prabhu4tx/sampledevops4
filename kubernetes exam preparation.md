@@ -112,7 +112,30 @@ Node Affinity provide the feature for assign a pod in a particular node
   requireDuringSchedulingRequiredDuringExecution
   preferredDuringSchedulingRequiredDuringExecution
               
-       
+   Troubleshooting steps in Kubernetes
+   1) Application failure
+   2) Worker Node failure
+   3)Control Plane failure
+   
+   
+   1) Application failure
+   user use to report the application failure
+   a)check service status
+   if it is a web application, try to access the url with nodeport
+   e.g) curl http://web-service-ip:node-port
+   b)Check pod
+   c)check logs web
+   kubectl logs -f web --previous
+   Check dependent application
+   
+  Use case:
+  User ----30081(nodeport/8080(targetport)----> web service ---------> webapp-mysql(8080)---------mysqlservice(3306)----> mysql
+  
+   
+   
+   
+   
+   
        
        
        
