@@ -131,7 +131,63 @@ Node Affinity provide the feature for assign a pod in a particular node
   Use case:
   User ----30081(nodeport/8080(targetport)----> web service ---------> webapp-mysql(8080)---------mysqlservice(3306)----> mysql
   
-   
+   Steps for maintanance in kubernetes (Blue green approach)
+   1) first check all the nodes are available in the kubernetes cluster
+   2) kubectl get nodes
+   3) check all the application running on the nodes e.g) web 2)mysql 3)python flask
+     kubectl get pods --all-namespaces
+    4) Remove the particular node for maintance or apply the patch 
+       kubectl drain node name<node01> --ignore-daemonsets
+ Check the nodes now by executing kubectl get nodes
+ kubectl get nodes
+NAME      STATUS                     ROLES     AGE       VERSION
+master    Ready                      master    10m       v1.11.3
+node01    Ready,SchedulingDisabled   <none>    9m        v1.11.3
+node02    Ready                      <none>    9m        v1.11.3
+node03    Ready                      <none>    9m        v1.11.3
+ 
+ 7) Check what are the applicatons are running on the nodes now
+    you will get to know particular node will be down and pod are assigned to other nodes
+  8) All the patches are applied to node01 
+     now execute kubectl uncordon node01
+     master $ kubectl get nodes
+NAME      STATUS    ROLES     AGE       VERSION
+master    Ready     master    16m       v1.11.3
+node01    Ready     <none>    16m       v1.11.3
+node02    Ready     <none>    16m       v1.11.3
+node03    Ready     <none>    16m       v1.11.3
+ 9) Check now how many pods are assigned to node01
+    kubectl get pods -o wide
+ 10) why we are not scheduling any to kubernetes master
+   kubectl describe node master
+ 11) when we bring down nodes for maintance make sure application have replica .if there is same application pod is not running then we need use kubectl drain node02 --force --ignore-daeomensets
+ master $ kubectl get nodes
+NAME      STATUS                     ROLES     AGE       VERSION
+master    Ready                      master    35m       v1.11.3
+node01    Ready                      <none>    35m       v1.11.3
+node02    Ready,SchedulingDisabled   <none>    35m       v1.11.3
+node03    Ready                      <none>    35m       v1.11.3
+ =============
+ 
+ kubectl software version
+ v 1.11.13
+ 
+ 1 --> major
+ alpha --> it is kind of bugfix version will be there
+ beta --> this is all kind of bugfixed version and ready to use
+ package of various components
+ 1)Kube-apiserver: v:13.4
+ 2)control-manager:v1.13.4
+ 3)Kube-scheduler:v1.13.4
+ 4)kubelet:v1.13.4
+ 
+ 5)kube-proxy::v1.13.4
+ 6)kubectl: 1.13.4
+ 7)etcd cluster : v3.2.18
+ 8)coreDNS:1.1.3
+ 
+     
+    
    
    
    
