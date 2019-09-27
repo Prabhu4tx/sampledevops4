@@ -186,12 +186,12 @@ node03    Ready                      <none>    35m       v1.11.3
  7)etcd cluster : v3.2.18
  8)coreDNS:1.1.3
  
-     
-    
+     =========================
+kube-api server    
    
    
    
-   
+
        
        
        
