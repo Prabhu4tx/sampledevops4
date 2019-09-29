@@ -1,0 +1,9 @@
+portal.azure.com
+manage azure subcriptions and resources
+ 1) implementing azure policy:
+   A policy definition expresses what to evaluate and what actions to take.
+   2)create initiative - An initiative definition is a set of policy definitiona to help track your compilance state for a larger goal
+   3)You can limit the scope of the initiative definition to management groups,subcriptions or resource groups
+   
+   4)Once the initiative definition is assigned,you can evaluate the state of compilance for all your resources
+   
