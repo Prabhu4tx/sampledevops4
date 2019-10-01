@@ -187,7 +187,91 @@ node03    Ready                      <none>    35m       v1.11.3
  8)coreDNS:1.1.3
  
      =========================
-kube-api server    
+SSL Certificate in Kubernetes
+Generate key
+we use openssl
+1) Generate keys
+2) Certificate signing request
+3)Sign certificate
+
+certificate signing details
+step1: openssl genrsa -out ca.key 2048
+step 2: openssl genrsa -out admin.key 2048
+step 3:
+ admin.csr
+ openssl req -new -key admin.key -subj \ " /CN=kube-admin" -out admin .csr
+ 
+ sign certificate
+ openssl x509 -req -in admin.csr -CA ca.crt -CAkey ca.key -out admin.crt
+ 
+ kube scheduler certificate
+ WE need to create certificate for admin as admin.crt and admin.key,
+ scheduler.crt and scheduler.key,controller-manager.crt and controller-manager.key
+, controllermanager.crt and controller-manager.key,kube-proxy.crt and kube-proxy.key
+  
+  api server-kubelet-client.crt , apiserver-kubelet-clinet.key
+  apiserver-etcd-client.crt , apiserver-etcd-client.key for Kube-api server
+  
+  for kubelet server as kubelet-client.crt and kubelet-client.key are for kubelet server
+  
+  curl https://kube-apiserver:6443/api/v1/pods \
+      --key admin.key --cert admin.crt
+      --cacert ca.crt
+      
+   WE will create kube-config.yaml
+   apiVersion: v1
+   clusters:
+   - cluster:
+       certificate-authority: ca.crt
+       server: https://kube-apiserver:6443
+     name: kubernetes
+    
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+
    
    
    
