@@ -227,6 +227,46 @@ step 3:
      name: kubernetes
     
 
+kube API server:
+we have 2 certs 1) apiserver.crt  amnd apiserver.key
+use openssl command
+openssl req -new -key apiserver.key -subj \
+"CN=kube-apiserver" -out apiserver.csr -config openssl.cnf
+  apiserver.csr
+  openssl.conf 
+  [req]
+   req_extensions = v3_req
+   [ v3_req ]
+   basicConstraints = CA:FALSE
+   keyUsage = nonRepudiation
+   subjectAltName = @alt_names
+   [alt_names]
+   DNS.1 = kubernetes
+   DNS.2 = kubernetes.default
+   DNS.3 = kubernetes.default.svc
+   DNS.4 = kubernetes.default.svc.cluster.local
+   IP.1 = 10.96.0.1
+   IP.2 = 172.17.0.87
+openssl x509 -req -in apiserver.csr \ 
+-CA ca.crt -CAkey ca.key -out apiserver.crt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
  
  
