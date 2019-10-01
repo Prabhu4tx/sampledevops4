@@ -252,10 +252,106 @@ openssl x509 -req -in apiserver.csr \
 
 
 
+Client Certificate for clients
+1) admin
+    admin.crt
+    admin.key
+2) kube-Scheduler
+    scheduler.crt
+    scheduler.key
+3) kube-controller-manager:
+    controller-manager.crt
+    controller-manager.key
+4) kube-proxy
+    kube-proxy.crt
+    kube-proxy.key
+5) Kube-api server
+    apiserver-kubelet-client.crt
+    apiserver-kubelet-client.key
+    apiserver-etcd-client.crt
+    apiserver-etcd-client.key
+ 6) Kubelet Server
+     kubelet-client.crt
+      kubelet-client.key
+      
+      
+      =======================================
+      
+      
+      Server Certificate for servers:
+    1)  ETCD server:
+      etcdserver.crt
+      etcdserver.key
+     2) apiserver:
+      apiserver.crt
+      apiserver.key
+      3) Kubelet Server:
+      
+      kubelet.crt
+      kubelet.key
+      
+      ====================================================
+      
+ admin
+           ====== kubeapi-server =======> etcd server
+ 
+ scheduler 
+ 
+ kubecontrooller
+ Kube-proxy                                 kubelet server
 
 
-
-
+Procedure for cert creation
+1) Generate key:
+   openssl genrsa -out admin.key 2048
+   admin.key
+2) openssl req -new -key admin.key -subj \
+     "/CN=kube-admin" -out admin.csr
+     output =admin.csr
+  3) openssl x509 -req -in admin.csr -CA ca.crt -CAkey ca.key -out admin.crt
+    output = admin.crt
+ 
+ All the component required ca.crt certificate  in kubernetes
+ 
+ 
+ etcd server:
+ 
+ etcd-server
+ etcdpeer1.crt etcdpeer1.key
+ cat etcd.yaml
+ - etcd
+    - -- advertise-client-urls=https://127.0.0.1:2379
+    - --key-file=/path-to-certs/etcdserver.key
+    - --cert-file=/path-tocerts/etcdserver.crt
+    - --client-cert-auth=true
+    - --data-dir=/var/lib/etcd
+    - --initial-advertise-peer-urls=https://127.0.0.1:2380
+    - --initial-cluster=master=https://127.0.0.1:2380
+    - --listen-client-urls=https://127.0.0.1:2379
+    - --listen-peer-urls=https://127.0.0.1:2380
+    - --name=master
+    - --peer-cert-file=/path-to-certs/etcdpeer1.crt
+    - --peer-client-cert-auth=true
+    - --peer-key-file=/etc/kubernetes/pki/etcd/peer.key
+    - --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
+    - --snapshot-count=10000
+    - --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
+ 
+ 
+ Kube-api -server
+ kubernetes
+ kubernetes.default
+ kubernetes.default.svc
+ kubernetes.default.svc.cluster.local
+ 
+ 
+ 
+ openssl req -new -key apiserver.key -subj \
+ "/CN=kube-apiserver" -out apiserver.csr -config openssl.cnf
+ 
+    
+    
+     
 
 
 
