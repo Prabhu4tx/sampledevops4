@@ -349,6 +349,42 @@ Procedure for cert creation
  openssl req -new -key apiserver.key -subj \
  "/CN=kube-apiserver" -out apiserver.csr -config openssl.cnf
  
+ Kubeconfig File
+ ===============
+ 
+ kube config consists of 3 section
+ 1) clusters(developement)
+ 2) Contexts( Admin@developmet
+ 3)Users(dev user)
+ 
+ apiVersion: v1
+ kind: Config
+ clusters:
+ - name: development
+   cluster:
+      certificate-authority: /etc/kubernetes/pki/ca.crt
+      certificate-authority-data: 
+       server: https://development:6443
+       
+ contexts:
+   - name: Admin@development
+     context:
+       cluster:
+       user: admin
+       namespace: dev
+ users:
+ -name : admin
+ user:
+    client-certificate: admin.crt
+    client-key: admin.key
+  
+ to view config
+ kubectl config view
+ 
+ kubectl config view configfilename
+ 
+ 
+ 
     
     
      
