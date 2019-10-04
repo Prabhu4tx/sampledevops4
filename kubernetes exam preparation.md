@@ -383,11 +383,72 @@ Procedure for cert creation
  
  kubectl config view configfilename
  
- 
- 
-    
-    
-     
+ API Groups
+         core:
+          /api
+            |   
+            |
+            |
+            /v1
+            |
+            |
+            |
+            |
+         | --- -- ---
+         |
+         namespace   pods       rc
+         events      endpoints   nodes
+         bindings    PV          PVC
+         configmaps   secrets     services
+         
+         /apis
+         
+   /apps extensions  /networking.k8.io  /storage /authentication /certificate
+                         v1                                         v1
+                         
+                           networkpolicies                          certificatesigningrequests  
+      v1
+       deployments 
+        list
+         get
+         create
+       replicasets
+       statefulsets
+   curl http://localhost:6443 -k
+       --key admin.key
+       --cert admin.crt
+       --cacert   ca.crt
+       
+       kube proxy - enable service between pod 
+       kubectl proxy --> access the kubeapi servers
+       
+       Authorization
+        admins 
+        any operations can be performed
+        1)Node Authorization
+        2) Attribute base Authorization
+        3) Role based authorization
+        4) Webhook
+        
+        user --> kubeapi --> kubelet (Read -services,end points,nodes,pods)
+                                     (write-node status,pod status
+                                     
+          ABAC : group of user with certain condition
+          We will create a policy file .it is difficult to manage
+          
+        RBAC:
+        We will define a role  and create a security user and create a certificate
+        standard approach for kubernetes users
+        
+        Weebhook:
+        authorized externally
+        open policy agent is a tool
+        2 mode (authorization-mode
+        AlwaysAllow
+        AlwaysDeny
+        
+         
+         
 
 
 
