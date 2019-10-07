@@ -446,6 +446,41 @@ Procedure for cert creation
         2 mode (authorization-mode
         AlwaysAllow
         AlwaysDeny
+        ========
+        
+        Networking
+        ====
+        
+        Coredns
+        network namespace
+        switching
+        Routing
+        Default gateway
+        DNS
+        
+        Switches
+        
+        A  switch (network ) B vm
+        
+        ip link 
+        etho0
+        ip add addr
+        ip route add 
+        route
+        ip addr add 192.168.1.10/24 dev etho
+        ip route add 192.168.1.10/24 via 192.168.2.1
+        cat /proc/sys/net/ipv4/ip_forward
+        
+        DNS :
+        ==============
+        add ing the hostname in host under /etc/hosts
+        192.168.1.11   db
+        ping db
+        cat /etc/resolv.conf
+        nameserver 192.168.1.100
+        
+        
+        
         
          
          
