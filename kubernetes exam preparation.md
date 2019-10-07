@@ -480,7 +480,91 @@ Procedure for cert creation
         nameserver 192.168.1.100
         
         
+        Network namespace
+        connect namespace via virtual cable
+        ip link add verth-red type veth  peer name veth-blue
+        ip link set veth-red netsns red
+        ip netns exec red arp
+        arp
+        Linux bridge
+        ip link aa v-net0 type bridge
+        ip link
+        ip link set dev v-net-0 up
+        veth -red ---> veth-blue
+        ip -n red link
         
+        ip link add veth-red type 
+        ip link set veth-red ntns red
+        
+        iplink set veth-blue netns blue
+        ip nnetns exec blue ip route add 192.168.1.0/24 via 192.168
+        iptables -t nat -A POSTROUTING -s 192..168.15.0/24 
+        ipnetns exec blue ping 8.8.8.8
+        port forwarding
+        iptables -t nat -A PREROUTING
+        Docker network
+        docker run --network none nginx
+        Host Network
+        docker run --network host nginx
+        Bridge
+        docker run nginx
+        docker network ls
+         ip link
+         ip link add dockero type bridge
+         ip addr 
+         ip netns
+         netstat -plnt
+         docker inspect 
+         docker run -p 8080:80 nginx
+         iptables \
+            -t nat \
+            -A PREROUTING
+         
+         
+iptab;es -t 
+bridge add <cid> <ns>
+ Container network interface
+ bridge program 
+ kube-api -6443
+ kubelet -10250
+ kube-scheduler -10251
+ controller -10252
+ etcd -2389
+ 
+ pod networking :
+ every pod should have an ipaddress
+ every pod should be able to communicate with every other pod in the same nodw
+ every pod should be ablle to communicate every other pod
+ ip link set dev vnet-0
+ ip link add 
+ 
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
         
          
          
