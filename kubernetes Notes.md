@@ -538,7 +538,168 @@ bridge add <cid> <ns>
  ip link set dev vnet-0
  ip link add 
  
-         
+============================================
+Kubernetes Cluster design:
+Purpose of the cluster
+a) learning
+b)development
+3)Cloud
+how many nodes 
+what kind of application
+Network traffic
+Memory
+
+for development & testing
+multi-node cluster
+
+Producction application
+up to 5000 nodes
+15ok pods
+200,000 container
+100 pods
+
+AWS 6 -10 m3.large 2cpv 7.5 GB
+
+Cloud
+:
+GKE for GCP
+KOPS for AWS
+AKS for AZure
+=============]
+
+Storage:
+High performance
+
+Nodes
+Virtual or Physical machine
+4 Node Cluster
+Master vs Worker node
+Linux x89
+
+master node can host workloads
+
+M1                     M2
+apiserver              apiserver
+controllerManager      controllerManager
+scheduler               scheduler 
+ETCD                    ETCD
+
+Kubernetes infrastructure:
+
+Turnkey Solutions :                           HOSTED Solutions
+Openshift/Cloud Foundary Runtime/Vagrant(1.13)    openshift online /Amazo n Elastic services
+1)PROVISION VM                                 Kubernetes as a service
+2)Configure Vm                                  provide provision vm
+3)Scripts to Deploy Cluster                     install kubernetes
+4) Maintain VM yourself                         Provides maintain VM
+Kubernetes on AWS using KOPS                    AKS or GKS
+
+https://www.objectif-libre.com/en/blog/2018/07/05/k8s-network-solutions-comparison/
+1 master
+2 worker node
+HA(High Availability) setup
+
+Load Balancer(nginx or HTTP proxy))
+M1  portL:6443 Active         M2 Active (6443
+apiserver              apiserver
+controllerManager      controllerManager
+scheduler               scheduler 
+ETCD                    ETCD
+
+=========
+kube-controller-manager --leader-electtrue
+kube-controller-manager --leader-elect-lease-duration 15s
+kube-controller-manager --leader-elect-deadline 15
+
+   
+M1  portL:6443 Active         M2 Passive(6443
+apiserver              apiserver
+controllerManager      controllerManager
+scheduler               scheduler 
+ETCD                    ETCD
+
+ETCD:
+2 toplogy
+1) part of master node
+2) running in a seperate node(lesser risk
+===
+easier to setup
+high risk
+
+ETCD in HA mode
+================
+ETCD: distributed key-value store that is a simple,secured
+
+key value
+{
+"name": "prabhu"
+distributed
+server1-2379(read/write)        server2-2379(read/write)     server3-2389(read/write)
+
+RAFT protocol
+
+Random timer -- send the request will be the leader
+if another node didnt get any request by the leader , it will decide between all 3 
+1       2       3 
+leader
+r       w       w 
+w        w       down
+Quoram 3  = n/2 +1 = 3/2 +1= 2.5 = 2  
+Quoram 7  = 5 /2 + 1 = 3.5 = 3
+
+master node should be always odd 
+
+installation steps for ETCD
+etcdctl
+version 2 and 3 :
+export ETCDCTL_API=3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
          
          
          
