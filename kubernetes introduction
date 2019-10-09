@@ -8,3 +8,133 @@ c)Retrieve data
 d)update etcd
 e)Scheduler
 f)Kubelet
+AKs setup:
+https://www.azuredevopslabs.com/labs/vstsextend/kubernetes/
+
+prabhu@Azure:~$ version=$(az aks get-versions -l <region> --query 'orchestrators[-1].orchestratorVersion' -o tsv)
+bash: region: No such file or directory
+prabhu@Azure:~$ version=$(az aks get-versions -l eastus --query 'orchestrators[-1].orchestratorVersion' -o tsv)
+prabhu@Azure:~$ echo $version
+1.15.3
+prabhu@Azure:~$ az group create --name akshandsonlab --location eastus
+{
+  "id": "/subscriptions/807df8ca-ccd1-437c-88a4-8c6256dc8d14/resourceGroups/akshandsonlab",
+  "location": "eastus",
+  "managedBy": null,
+  "name": "akshandsonlab",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": "Microsoft.Resources/resourceGroups"
+}
+az aks create --resource-group akshandsonlab --name prabh --enable-addons monitoring --kubernetes-version $version --generate-ssh-keys --location eastus
+
+az acr create --resource-group akshandsonlab --name renewalio --sku Standard --location eastus
+
+CLIENT_ID=$(az aks show --resource-group akshandsonlab --name prabh --query "servicePrincipalProfile.clientId" --output tsv)
+ACR_ID=$(az acr show --name renewalio --resource-group akshandsonlab --query "id" --output tsv)
+
+
+======
+
+prabhu@Azure:~$ echo $CLIENT_ID
+0d4f0459-65a4-4e68-88e7-b471d035be6f
+prabhu@Azure:~$ ACR_ID=$(az acr show --name renewalio --resource-group akshandsonlab --query "id" --output tsv)
+prabhu@Azure:~$ echo $ACR_ID
+/subscriptions/807df8ca-ccd1-437c-88a4-8c6256dc8d14/resourceGroups/akshandsonlab/providers/Microsoft.ContainerRegistry/registries/renewalio
+prabhu@Azure:~$
+
+
+
+az role assignment create --assignee 0d4f0459-65a4-4e68-88e7-b471d035be6f --role acrpull --scope /subscriptions/807df8ca-ccd1-437c-88a4-8c6256dc8d14/resourceGroups/akshandsonlab/providers/Microsoft.ContainerRegistry/registries/renewalio
+
+output
+{
+  "canDelegate": null,
+  "id": "/subscriptions/807df8ca-ccd1-437c-88a4-8c6256dc8d14/resourceGroups/akshandsonlab/providers/Microsoft.ContainerRegistry/registries/renewalio/providers/Microsoft.Authorization/roleAssignments/20ce64a2-64c1-459d-aad3-a9a7a38bcb3d",
+  "name": "20ce64a2-64c1-459d-aad3-a9a7a38bcb3d",
+  "principalId": "64171af6-e5c5-4d3b-b982-8b8b80c7d603",
+  "principalType": "ServicePrincipal",
+  "resourceGroup": "akshandsonlab",
+  "roleDefinitionId": "/subscriptions/807df8ca-ccd1-437c-88a4-8c6256dc8d14/providers/Microsoft.Authorization/roleDefinitions/7f951dda-4ed3-4680-a7ca-43fe172d538d",
+  "scope": "/subscriptions/807df8ca-ccd1-437c-88a4-8c6256dc8d14/resourceGroups/akshandsonlab/providers/Microsoft.ContainerRegistry/registries/renewalio",
+  "type": "Microsoft.Authorization/roleAssignments"
+}
+
+
+az sql server create -l <region> -g akshandsonlab -n <unique-sqlserver-name> -u sqladmin -p P2ssw0rd1234
+
+======
+
+prabhu@Azure:~$ az sql server create -l eastus -g akshandsonlab -n dbdetails -u sqladmin -p P2ssw0rd1234
+{
+  "administratorLogin": "sqladmin",
+  "administratorLoginPassword": null,
+  "fullyQualifiedDomainName": "dbdetails.database.windows.net",
+  "id": "/subscriptions/807df8ca-ccd1-437c-88a4-8c6256dc8d14/resourceGroups/akshandsonlab/providers/Microsoft.Sql/servers/dbdetails",
+  "identity": null,
+  "kind": "v12.0",
+  "location": "eastus",
+  "name": "dbdetails",
+  "resourceGroup": "akshandsonlab",
+  "state": "Ready",
+  "tags": null,
+  "type": "Microsoft.Sql/servers",
+  "version": "12.0"
+}
+
+
+az sql db create -g akshandsonlab -s dbdetails  -n mhcdb --service-objective S0
+
+
+output
+
+"currentServiceObjectiveName": "S0",
+  "currentSku": {
+    "capacity": 10,
+    "family": null,
+    "name": "Standard",
+    "size": null,
+    "tier": "Standard"
+  },
+  "databaseId": "942422d2-f38d-4e97-9715-ea68b207fb73",
+  "defaultSecondaryLocation": "westus",
+  "earliestRestoreDate": "2019-10-09T07:35:40.803000+00:00",
+  "edition": "Standard",
+  "elasticPoolId": null,
+  "elasticPoolName": null,
+  "failoverGroupId": null,
+  "id": "/subscriptions/807df8ca-ccd1-437c-88a4-8c6256dc8d14/resourceGroups/akshandsonlab/providers/Microsoft.Sql/servers/dbdetails/databases/mhcdb",
+  "kind": "v12.0,user",
+  "licenseType": null,
+  "location": "eastus",
+  "longTermRetentionBackupResourceId": null,
+  "managedBy": null,
+  "maxLogSizeBytes": null,
+  "maxSizeBytes": 268435456000,
+  "name": "mhcdb",
+  "readScale": "Disabled",
+  "recoverableDatabaseId": null,
+  "recoveryServicesRecoveryPointId": null,
+  "requestedServiceObjectiveName": "S0",
+  "resourceGroup": "akshandsonlab",
+  "restorableDroppedDatabaseId": null,
+  "restorePointInTime": null,
+  "sampleName": null,
+  "sku": {
+    "capacity": 10,
+    "family": null,
+    "name": "Standard",
+    "size": null,
+    "tier": "Standard"
+  },
+  "sourceDatabaseDeletionDate": null,
+  "sourceDatabaseId": null,
+  "status": "Online",
+  "tags": null,
+  "type": "Microsoft.Sql/servers/databases",
+  "zoneRedundant": false
+  
+  
+
