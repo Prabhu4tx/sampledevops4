@@ -764,8 +764,45 @@ IP.3 = 127.0.0.1
    openssl req -new -key service-account.key -subj "/CN=service-accounts" -out service-account.csr
    openssl x509 -req -in service-account.csr -CA ca.crt -CAkey ca.key -CAcreateserial  -out service-account.crt -days 1000
    
-  
+   for instance in master3 ; do
+> scp ca.crt ca.key kube-apiserver.key kube-apiserver.crt \
+> service-account.key service-account.crt \
+> etcd-server.key etcd-server.crt \
+> ${instance}:~/
+> done
+   =========
+   
+   kubernetes configuration for authentication
+   setup the kube-proxy kubernetes configuration
+   step1: 
+   set up the cluster 
+    kubectl config set-cluster kubernetes-noble \
+    --certificate-authority=ca.crt \
+    --embed-certs=true \
+    --server=https://${LOADBALANCER_ADDRESS}:6443 \
+    --kubeconfig=kube-proxy.kubeconfig
+    ubectl config set-credentials system:kube-proxy \
+    --client-certificate=kube-proxy.crt \
+    --client-key=kube-proxy.key \
+    --embed-certs=true \
+    --kubeconfig=kube-proxy.kubeconfig
 
+  kubectl config set-context default \
+    --cluster=kubernetes-the-hard-way \
+    --user=system:kube-proxy \
+    --kubeconfig=kube-proxy.kubeconfig
+
+  kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig
+}
+
+
+{ 
+kubectl config set-cluster kubernetes-noble --certificate-authority=ca.crt --embed-certs=true --server=https://127.0.0.1:6443 --kubeconfig=kube-controller-manager.kubeconfig; kubectl config set-credentials system:kube-controller-manager --client-certificate=kube-controller-manager.crt --client-key=kube-controller-manager.key --embed-certs=true --kubeconfig=kube-controller-manager.kubeconfig; kubectl config set-context default --cluster=kubernetes-noble --user=system:kube-controller-manager --kubeconfig=kube-controller-manager.kubeconfig; kubectl config use-context default --kubeconfig=kube-controller-manager.kubeconfig
+}
+scheduler:
+
+
+{ kubectl config set-cluster kubernetes-noble --certificate-authority=ca.crt --embed-certs=true --server=https://127.0.0.1:6443 --kubeconfig=kube-scheduler.kubeconfig; kubectl config set-credentials system:kube-scheduler --client-certificate=kube-scheduler.crt --client-key=kube-scheduler.key --embed-certs=true --kubeconfig=kube-scheduler.kubeconfig; kubectl config set-context default --cluster=kubernetes-noble --user=system:kube-scheduler --kubeconfig=kube-scheduler.kubeconfig; kubectl config use-context default --kubeconfig=kube-scheduler.kubeconfig; }
 
    
    
