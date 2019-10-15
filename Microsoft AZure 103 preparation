@@ -7,3 +7,154 @@ manage azure subcriptions and resources
    
    4)Once the initiative definition is assigned,you can evaluate the state of compilance for all your resources
    
+   
+   ===========
+   
+   How to create a tag for resourceName and Resourcegroup
+   1)Get-AzureRMResource
+   2)$r = Get-AzureRmResource -ResourceName lab-vm -ResourceGroupName 63-776264-applying-tags-to-vms-in-azure-using-powershell-qfb
+Azure:/
+To get resource
+Get-AzResource
+Set-AzureRmResource -Tag @{ Dept= "Devops"; Environment="Test" } -ResourceId $r.ResourceId -Force
+
+VMName Location ProvisioningState VMSize        OS           SKU       OSVersion AdminUserName NetworkInterfaceName------ -------- ----------------- ------        --           ---       --------- ------------- --------------------lab-VM westus   Succeeded         Standard_B1ms UbuntuServer 16.04-LTS latest    azureuser     lab-VM-NIC
+
+Azure Monitoring Service:
+
+AActivity logs
+Azure infrastructure logs
+Tenant logs
+Resource logs
+
+NoN Compute Resources
+
+1)Network security group
+2)Key valult
+
+Compute Resources
+
+Azure batch,VM,Azure function,Services
+
+Define the alert codition
+Define the alert details
+Define an action group
+Alert:
+
+Target 
+what component
+Alert creteria
+Alert logic
+
+Azure monitor data platform
+==========================
+
+Application
+OS
+Azure Resources
+Azure Subcriptoion
+Azure Tenants
+Azure metrics:
+  Metrics explorer
+  !)Analyze
+  2)Visualize
+  Alert
+  4)Automate,Retrieve
+  Export
+  4) Archieve: 93 days (metrics
+    diaganis-30 days
+    Activity logs -90 days
+    
+    Improvement Latency - every 1 minute
+    Mult-Dimensional Metrics
+    More control over metric condition
+    Metric from logs
+    https://docs.microsoft.com/en-us/azure/azure-monitor/platform/alerts-dynamic-thresholds
+    
+    Dynamic type of Alerting
+    
+    1)Scalable Alerting
+    2)Smart Metric Pattern ecognization
+    Intuitive Configuration
+    
+    senstive setting in dynamic threshold
+     1)High
+     Medium
+     Low
+     
+    https://docs.microsoft.com/en-us/azure/advisor/advisor-overview
+    Azure Advisor
+    Advisor
+    
+    Utilization azure resource
+    Monitoring for unused resources with Azure asvisor
+    
+    1) Availablilty
+    2)Security
+    3)Costs
+    4)Performance
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+   
