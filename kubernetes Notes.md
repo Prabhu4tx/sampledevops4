@@ -804,6 +804,456 @@ scheduler:
 
 { kubectl config set-cluster kubernetes-noble --certificate-authority=ca.crt --embed-certs=true --server=https://127.0.0.1:6443 --kubeconfig=kube-scheduler.kubeconfig; kubectl config set-credentials system:kube-scheduler --client-certificate=kube-scheduler.crt --client-key=kube-scheduler.key --embed-certs=true --kubeconfig=kube-scheduler.kubeconfig; kubectl config set-context default --cluster=kubernetes-noble --user=system:kube-scheduler --kubeconfig=kube-scheduler.kubeconfig; kubectl config use-context default --kubeconfig=kube-scheduler.kubeconfig; }
 
+
+Networking:
+Switching and Routing
+Switching
+Routing
+Default Gateway
+
+DNs:
+ DNS configuration on Linux
+  CoreDNS introduction
+Network Namespaces
+Docker networking
+
+Switching
+
+ip link 
+ip addr add 192.168.1.10/24 dev etho
+
+Switch can communica†e within the network
+Router :
+THis is used to connect 2 different network'
+network 1: 192.168.1.0
+network2 : 192.168.2.0
+gateway 
+command:
+
+   
+   route
+   ip route add 192.168.1.0/24 via 192.168.2.1
+   ip route add 172.217.194.0/24 via 192.168.2.1
+   outside of the network
+   
+   ip route add default via 192.168.2.1
+   0.0.0.0
+   if multiple routers
+   
+   ip route add 192.168.1.0/24 via 192.168.2.2
+   
+   host a    via 192.168.1.0          hostb    via (192.168.2.0)          hostc
+  192.168.1.0      192.168.1.6          192.168.2.6                       192.168.2.5
+  ip route add 192.168.2.0/24 via 192.168.1.6
+  ip route add 192.168.1.0/24 via 192.168.2 .6
+  cat /proc/sys/net/ipv4/ip_forward =0 
+  cat /proc/sys/net/ipv4/ip_forward =1
+  
+   
+   ip link
+   ip addr
+  ip addr add 192.1681.10/24 dev e0
+  cat /etc/resolve.conf
+  
+  Namespace:
+  Routing table
+  ARP table
+  
+  ip netns add red
+  ip netns add green
+  ip link 
+  ip netms exec red ip link 
+  ip -n red link
+  
+  
+  arp
+  route
+  ip link add veth-red type veth peer name veth-blue
+  ip link set veth-red netns red
+  ip link set veth-blue netns blue
+  
+  ip-n red addr add 192.168.15.1 dev veth-red
+  ip -n blue addr add 192.168.15.2 dev veth-blue
+  ip -n red link ser veth-red up
+  ip -n blue link set veth-blue up
+  ip netns exec red ping 192,168.15.2
+  
+  ip netns exec red arp
+  ip netns exec blue arp
+  
+  arp
+  
+  
+  
+  Virtual switch
+  Linux bridge
+  
+  Linux Bridge
+  ip link add v-net-0 type bridge
+  ip link set dev vnet-0 up
+  
+  ip link add veth-red type veth peer name veth-red-br
+  ip link add veth-blue type veeth peer name veth-blue-br
+  
+  ==
+  ip link set veth-red netns red
+  ip link set veth-red-br master v-net-o
+  ip link set veth-blue netns blue
+  iplink set veth-blue-bbr master v-net-0
+  ip -n red addr add 192.168.15.1 dev veth-red
+  ip -n blue addr add 192.168.15.2 dev veth-blue
+  ip -n red link set veth-red up
+  ip -n blue link set veth-blue up
+  
+  
+  ==============
+  
+  
+  ip addr add 192.168.15.5 dev vnet-0
+  ip netns exec blue route
+  Gateway :
+  connect the system from one network to another network
+  
+  
+  ip netns exec blue ip route add 192.168.1.0/24 via 192.168.15.5
+  ip netns exec blue ping 192.168.1.3
+  iptables -t nat -A POSTROUTING -s 192.168.15.0/24 
+  ip netns exec ping 8.8.8.8
+  iptables -t nat -A PREROUTING --dport 80 --to-destination 192.168.15.2:80 -J DNAT
+  
+  
+  Docker networking
+  Bridge
+  
+  internet private network
+  docker network ls
+  ip link
+  
+  ip link add docker0 type bridge
+  ip addr
+  docker run nginx
+  ip netns
+  docker inspect network id
+  ip link -n nsname
+  ip addr -n namespacename
+  
+  docker run -p 8080:80 nginx
+  
+  
+  iptables \
+  -t nat \
+  -A  PREROUTING \
+  -j DNAT
+  --dport 8080 \
+  -- to-destination 80
+  
+
+ip tables \
+- t nat \
+-A DOCKER \
+-j DNAT  \
+--dport 8080 \
+--tp-destination 172.17.0.3:80
+iptables -nvL -t nat
+1) create a network namespace
+2 create a bridge network/Interface
+Create VETH pairs (pipe virtual cable)
+Attach veth to namespace
+Attach other veth to bridge
+Assign ip address
+Bring the interfaces up
+Enable NAT -ip Masquerade
+
+bridge add 2e34d  cf34 /var/run/netns/2e34d
+Container Network interface
+=================
+
+Bridge plugin for container runtime
+1) Container Runtime must create network namespace
+Identify network the container must attach to
+Container Runtime to invoke network Plugin which container is added
+Container Runtime to invoke Network Plugin Bridge which container is deleted
+JSON format of the network Configuration
+
+plugin
+Manage ip addresss assignment to POD
+Return result in Specific format
+command line argument ADD/DEL/CHECK
+
+set of supported plugin
+1)Bridge
+2)VLAN
+3)IPVLAN
+MACVLAN
+flannel
+calico
+weaveworks
+cilium
+
+docker uses CNM (container neytwork Model)
+
+
+
+master  ws 
+each node need to connect to network
+
+
+kube-api server port 6443
+kubelet :10250
+kube-scheduler :10251
+kubecontroller manager :10252
+
+etcd 
+
+pod networking
+========
+
+how pod communicate each other
+networking solution
+Network model:
+every pod should have an ip address
+every pod should be able to communicate with every other pod in the same node
+
+net-script.sh
+cr
+
+ip link add 
+ip link set
+ip link ser
+Assign IP Address
+
+ip -n ns addr add
+ip -n ns route add
+Bring up interface
+ip -n <ns> link set
+ 
+ip route add 10.244.2.2 via 192.168.1.2
+ip route add 10.244.3.2 via 192.168.1.13
+
+ip routr add 10.244.1.2 via 192.168.1.11
+ip route add 10.244.3.2 via 192.168.1.13
+ip route add 10.244.1.2 via 192.168.1.11
+ip route add 10.244.2.2  via 192.168.1.12
+
+
+DEploy weave:
+deploy as a pod or daemons
+kubectly apply -f 
+https://www.weave.works/docs/net/latest/kubernetes/kube-addon/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+
    
    
  
