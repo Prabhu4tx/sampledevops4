@@ -1042,9 +1042,77 @@ kubectly apply -f
 https://www.weave.works/docs/net/latest/kubernetes/kube-addon/
 
 
+=====
 
+Volume
+====
 
+volume need storage
+volumes:
+- name: data-volume
+  hostPath:
+     path: /data
+     type: Directory
+persistancevolumes:
+volumes
+- name: data-volume
+cluster wide volume and it is stored in the 
 
+pv-definition.yml
+accessmodes
+ - ReadWriteOnce
+ - ReadWriteMany
+ 
+ pvclaim
+ 2 differnt objects
+ Binding
+ PV 
+ PVC
+ 
+ 
+ sufficient capacity volume mode storage class selector access mode
+ 
+ pvc-definition.yaml
+ 
+ apiVersion: v1
+ kind: PersistentVolumeClaim
+ metadata:
+    name: myclaim
+  spec:
+    accessModes
+      - ReadWriteOnce
+    resources:
+       requests:
+          storage: 500Mi
+          
+  pv-definition.yml
+  
+  apiVersion: v1
+  kind: PersistentVolume
+  metadata: 
+    name: pv-vol1
+  spec:
+     accessModes
+       - ReadWriteOnce
+     capacity:
+       storage: 1Gi
+     awsElasticBlockStore:
+       volumeID: <volume-id>
+       fsType: ext4
+ 
+ 
+ 
+  when persistentVolumecliam is deleted  the persistent VolumeReclainPolicy : Recycle or Retain
+
+master $ kubectl get nodes -o json > /opt/outputs/nodes.json
+master $ kubectl get node node01 -o json > /opt/outputs/node01.json
+master $ kubectl  get nodes -o=jsonpath='{.items[*].metadata.name}' > /opt/outputs/node_names.txt
+master $ cat /opt/outputs/node_names.txt
+master node01master $ kubectl get nodes -o jsonpath='{.items[*].status.nodeInfo.osImage}' > /opt/outputs/nodes_os.txt
+master $ cat /opt/outputs/nodes_os.txt
+Ubuntu 16.04.2 LTS Ubuntu 16.04.2 LTSmaster $ kubectl config view --kubeconfig=my-kube-config -o jsonpath="{.users[*].name}" > /opt/outputs/users.txt
+master $ cat /opt/outputs/users.txt
+aws-user dev-user test-usermaster $
 
 
 
