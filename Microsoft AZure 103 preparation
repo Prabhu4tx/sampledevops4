@@ -111,8 +111,70 @@ Cost Analysis Prerequiste
 AZure file storage 
 reliable and fault tolerant
 create AZure file storage
+AZure Table storage Keys
+  it has 
+  --> Partition Key 
+  --> Row key
+  
+  A partition is a consecutive range of entities possesing the same partition key value
 
+Row key --> unique key finds a particular column in a partition key
 
+AZure storage queues:
+Storage queues allow us put message in them so other process can read and process those messages . For e.g a message might contain email address of newly signed up
+user .Other processes can take message from the queue and send those message mails
+FiFO data structure
+Azure queue storage is a cloud based service that allows us to offload time consuming task from front end to backend
+
+Queuing Service concepts
+1)  storage Account
+2)url format
+3) Queue --> set of messages must be all lowercase
+4)Message -can be any format up to 64 kb  .the max timeto liive alowed can be any postive number or -1 indicate messge doesn;t expire 
+ message will be deleted from azure storge queue based on queue expire date
+ 
+ Azure storage explorer
+  1) Blog storage -> view ,delete
+  2)Queue storage: Peek most 32 mssage
+    dequeue message
+   3) Table storage
+   4)File storage
+   
+   Azure shared access signature
+   token will be generated for access the Azure storage resources
+   Data Replication option:
+    --> Locally Redundant storage(LRS)
+    --> Zone redundant storage(ZRS)
+    -->Geo-redudant storage (GRS)
+    --> Read access geo redundant storage(RA
+    
+    Azure storage Replication:
+    ====================
+    copies the data for planned and unplanned the ebvents
+    LRS: 3 copies of data with the same region
+    ZRS: ssingle region replica your data syncronously 
+    GRS: 100 miles away from primary region
+         natural disaster ..replica a data through seciondary region
+         
+    Read access geo redundant storage(RA GRS)
+     read only access for replica data
+     
+     ---
+     
+     ===========
+AZure import export Service:
+ship phtyscial disk to azure blob or file in azure data centre 
+1)Data migration
+2)Content distribution
+3)Backup
+ 4)Data Recovery
+ 
+ 
+ 
+ 
+ 
+ 
+ 
     
     
     
