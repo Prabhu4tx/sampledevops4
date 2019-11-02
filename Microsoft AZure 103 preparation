@@ -329,6 +329,19 @@ Relationship btwn Azure subcription and Resource
     Recovery service vault and it will be available i Storage account
     
     
+    VNET:
+    
+    Address space:--> range of ipaddress 
+    Subnets --> logical segment of a Virtual network .subnet is allocated a portion of a Virtual network address book
+    Regions
+    Subcription:
+    ip addresss range calculation
+    10.0.0.0/16(cidr)
+    allocation of ip address is 
+    2^(32-16)= 2^16=6558
+    
+    subnet: 10.2.0.0/26= 64 address
+    
     
     
     
