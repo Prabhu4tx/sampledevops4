@@ -200,6 +200,85 @@ ship phtyscial disk to azure blob or file in azure data centre
     store the data very rarely 
     --> low latency
     
+    SAS --> Shared access signature
+    --> 
+    2 storage account
+    1)source --az copy source
+    2)azcopy destianation
+    we need define role for storage account 
+    role: storage blob contributor
+    user:prabhu
+    
+    shared access signature -->
+    Allowed services
+    1)Blob
+    2)File
+    3)Table
+    4)Queue
+    Allowed resource type
+     -->service 
+     -->container
+     -->object
+     Allowed permissin
+     Allowed Protocl
+     Coonection string
+     SAS Token
+     
+     --azcopy login
+         -->microsof t login 
+         Default Directory 
+            >properties
+            azcopy copy " source <sas url>" "destn sas url > 
+            
+     Azure CDN:
+     ===
+     
+     Azure Content Delivery Network is a cloud service that works by providing alternative server nodes for users to download services 
+     a cached version of a application in another region 
+     --> AZure CDN is global CDN solution for delivering high bandwdth content
+     
+     you can cache static object 
+     1)CDN Profile
+      -->Subcription
+      -->Resource group 
+      end point : container
+      -->end point 
+         -->name :cdndemo3345
+         origin:storage
+         originhosst: cdndemo<storage name>
+         enable http,httpd 
+         htps://cdndemoabc.net
+         =======
+         
+        1) virtual machine
+         2)configuration of Azure VM
+         3)Azure Virtual m/c
+        4) Data disk in Azure
+        5)Network interfaces
+        6) Azutre VM scale set
+        7) why we need VM scale set 
+         8) Automating deployment in Azure
+         9)ARM
+         10)VRM
+         11) custom vm image
+         12)Backup
+         13)Restore Azure VM
+         
+         ======
+         
+         
+         Types of virtual m.c
+         
+         1)A series --> hight performance compute intestive and network (HPC cluster)
+         2) D series--> relation db 
+         F series 2 cpu (extensive work load) --> batch process ,application server .medium traffic web server
+         G series --> relation db
+         H series --> hight performance compute intestive and network (HPC cluster)
+         L series  --> zzbig data,sql and No sql db , high disk throughput 
+         M series VM
+         N series VM(GPU enabled vM)
+
+    
     
     
     
