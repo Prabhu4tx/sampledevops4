@@ -169,6 +169,73 @@ ship phtyscial disk to azure blob or file in azure data centre
 3)Backup
  4)Data Recovery
  
+ ship the hard drive using import/export client tool 
+ create an import/export job using AZ Portal 
+ Step 1: create
+ Step2: Shipping
+ 3)Transferring
+ 4)Packing
+ 5)Complete
+ 
+ Azure File Sync:
+ 
+ Back up solution
+ Data recovery 
+ Syncronzie service from onpremises to Azure cloud
+ 
+ --> Azure file sync allows the syncronization of on-premises file server with Azure files supported by storage accounts
+ --> Azure file sync is powered by local caches and continous syncronizes with Windows Server
+ 
+ --> 
+ 
+ Azure BLOB storage
+ =====================
+ backup data to the microsoft cloud
+ 1)AZ copy--> copy to second storage account 
+ 2)Snapshot --> cannot storage in the Azure vault 
+ 3)Azure Archieve storage
+ --Blob storage can create snapshot
+ Azure Archieve storage --> automatically encrypted 
+  --> similar like hot,cool storage method, low rate for the storage
+    store the data very rarely 
+    --> low latency
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+ 
+ 
  
  
  
