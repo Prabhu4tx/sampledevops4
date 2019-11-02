@@ -277,9 +277,56 @@ ship phtyscial disk to azure blob or file in azure data centre
          L series  --> zzbig data,sql and No sql db , high disk throughput 
          M series VM
          N series VM(GPU enabled vM)
+====================================
 
+Configuration option for Virtual m/c
+-->basics
+2)Disks --> Premium SSD ,
+3) Networking -->public ip or 
+4)Management
+5) Guest Config
+6)Tags
+
+Azure Data disks:
+==================
+
+store os or application or data
+1)OS disk --> store the os(2048 gb)
+2)Temporary Disk --> data will be stored (RAM --when system restarted all the data will be removed)
+
+Data disk 4089 GB
+AZ disk is 99.999% availabilty
+Managed Disk   unmanaged disk
+storage acct per region is 200   10,000 managed disk per region
+
+
+Network interfaces:
+
+communcate with the internet
+
+
+
+
+
+Availabilty set from Availabilty options
     
+Azure subcription and Resources
+=========
+Users should have subcription to access the services
+To use this tool Azure cli,poweshell they need to create a account 
+user can have multiple account 
+Resource: any service offered by azure
+Resource group: collection of services wwhich application are grouped together
+
+Relationship btwn Azure subcription and Resource 
+
+--> Every resource will be deployed within a resource group
+--> Every resource can be be associated with azure subcription
+
+    =========
     
+    Azure VM scale sets
+    Recovery service vault and it will be available i Storage account
     
     
     
