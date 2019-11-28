@@ -1,1 +1,3 @@
 kubectl get deploy -n e2e --n-header=true|awk '{print $1}' | xargs -l % kubectl scale --replicas=1 deployment/% -n e2e
+to check total number of containers in a pod
+kp  webapp -o jsonpath="{..image}" |tr -s '[[:space:]]' '\n' | sort | uniq -c
