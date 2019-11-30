@@ -27,3 +27,10 @@ to maintain quoram 3 out
 50 gb
 n-1/2]
 
+docker container run -dt -p 80:80 nginx
+docker container run -dt -P nginx (it will randomly pick the port
+docker run -p 53160:53160/udp -t -i nginx
+
+Docker content trut -- > to pull the image
+
+
