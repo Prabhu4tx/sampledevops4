@@ -1,0 +1,29 @@
+DCA:
+1) Section :
+Orchestration
+Docker swarm
+Global mode and replicated mode
+docker service create --name mytest --mode global nginx
+global:
+deploy the service on each container in the worker node
+
+replica mode:
+randomly pick the worker node and deploy the container
+
+Scale vs update:
+
+to scale the replica value
+both are same
+docker service scale myservice=6
+docker serbice update --replicas 5 myservice=7
+docker service create
+
+Quorum
+1 swarm master
+4 worker nodes
+
+to maintain quoram 3 out 
+16 gb
+50 gb
+n-1/2]
+
