@@ -107,6 +107,11 @@ Download Reports
 Cost Analysis Prerequiste
 
 ===========
+Benefit of Azure Storage
+1)Security
+2)Accessibility
+3)Scalability
+4) High Availability
 
 AZure file storage 
 reliable and fault tolerant
@@ -119,6 +124,14 @@ AZure Table storage Keys
   A partition is a consecutive range of entities possesing the same partition key value
 
 Row key --> unique key finds a particular column in a partition key
+
+Blob Storage account:
+Blob-only storage account .it has access tier hot and cool .each capable of handling differnt types of storage data
+
+Hot Storage:
+data has been storage regularly then it will charge little bit more and hence low latency
+Cool Storage 
+used to store less accessed data or archieved data.Higher latency than hot tier 
 
 AZure storage queues:
 Storage queues allow us put message in them so other process can read and process those messages . For e.g a message might contain email address of newly signed up
