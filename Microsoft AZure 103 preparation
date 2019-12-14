@@ -358,7 +358,83 @@ Relationship btwn Azure subcription and Resource
     
     
     
-    
+    {
+    "authorization": {
+        "action": "Microsoft.Compute/virtualMachines/write",
+        "scope": "/subscriptions/807df8ca-ccd1-437c-88a4-8c6256dc8d14/resourcegroups/FirstRG/providers/Microsoft.Compute/virtualMachines/linuxroletest"
+    },
+    "caller": "prabhu4tx@gmail.com",
+    "channels": "Operation",
+    "claims": {
+        "aud": "https://management.core.windows.net/",
+        "iss": "https://sts.windows.net/335d6dc1-5939-4777-835e-9d958f046469/",
+        "iat": "1576290241",
+        "nbf": "1576290241",
+        "exp": "1576294141",
+        "http://schemas.microsoft.com/claims/authnclassreference": "1",
+        "aio": "AUQAu/8NAAAA//DMBEUZADdeIQ68uGPzrwsBOkW+LJaXIFvYHz+bYHrnYHVJnlewr7RAahr3Ll8Haa7Yv3iODfWsWrkEVuFcnQ==",
+        "altsecid": "1:live.com:00037FFEECB6A170",
+        "http://schemas.microsoft.com/claims/authnmethodsreferences": "pwd",
+        "appid": "c44b4083-3bb0-49c1-b47d-974e53cbdf3c",
+        "appidacr": "2",
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress": "prabhu4tx@gmail.com",
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname": "Bhaskar",
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname": "prabhu",
+        "groups": "e20d643b-ef62-4d8b-99cd-eae061eab426",
+        "http://schemas.microsoft.com/identity/claims/identityprovider": "live.com",
+        "ipaddr": "24.12.152.25",
+        "name": "prabhu Bhaskar",
+        "http://schemas.microsoft.com/identity/claims/objectidentifier": "69c80ce3-d587-48ef-82c1-d078f13bbe8c",
+        "puid": "100320003AA88F9A",
+        "http://schemas.microsoft.com/identity/claims/scope": "user_impersonation",
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": "H7IPYuLwWemfeuCueyS6oAx1Xu4FbxOah_V6Io_CkQU",
+        "http://schemas.microsoft.com/identity/claims/tenantid": "335d6dc1-5939-4777-835e-9d958f046469",
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name": "live.com#prabhu4tx@gmail.com",
+        "uti": "ohFjiwcoCUiEqgTy_XUyAA",
+        "ver": "1.0",
+        "wids": "62e90394-69f5-4237-9190-012177145e10"
+    },
+    "correlationId": "ff0d500e-2350-433c-9c63-755e3c6c8498",
+    "description": "",
+    "eventDataId": "8d2aaee4-8a0f-4234-9235-db0f047c99d4",
+    "eventName": {
+        "value": "BeginRequest",
+        "localizedValue": "Begin request"
+    },
+    "category": {
+        "value": "Administrative",
+        "localizedValue": "Administrative"
+    },
+    "eventTimestamp": "2019-12-14T02:57:07.5496043Z",
+    "id": "/subscriptions/807df8ca-ccd1-437c-88a4-8c6256dc8d14/resourcegroups/FirstRG/providers/Microsoft.Compute/virtualMachines/linuxroletest/events/8d2aaee4-8a0f-4234-9235-db0f047c99d4/ticks/637118890275496043",
+    "level": "Informational",
+    "operationId": "babe1c1f-6bcd-4dff-a048-919aebb54505",
+    "operationName": {
+        "value": "Microsoft.Compute/virtualMachines/write",
+        "localizedValue": "Create or Update Virtual Machine"
+    },
+    "resourceGroupName": "FirstRG",
+    "resourceProviderName": {
+        "value": "Microsoft.Compute",
+        "localizedValue": "Microsoft.Compute"
+    },
+    "resourceType": {
+        "value": "Microsoft.Compute/virtualMachines",
+        "localizedValue": "Microsoft.Compute/virtualMachines"
+    },
+    "resourceId": "/subscriptions/807df8ca-ccd1-437c-88a4-8c6256dc8d14/resourcegroups/FirstRG/providers/Microsoft.Compute/virtualMachines/linuxroletest",
+    "status": {
+        "value": "Started",
+        "localizedValue": "Started"
+    },
+    "subStatus": {
+        "value": "",
+        "localizedValue": ""
+    },
+    "submissionTimestamp": "2019-12-14T02:58:38.1193085Z",
+    "subscriptionId": "807df8ca-ccd1-437c-88a4-8c6256dc8d14",
+    "relatedEvents": []
+}
     
     
     
