@@ -1,0 +1,54 @@
+Please find instruction to create a vm using powershell
+Step1:
+ Connect to azure account
+  connect-azaccount .. it will prompt to microsoft login page
+  set the credentials to a variable
+     $ cred = Get-Credential
+     
+     Step3:
+      Create a New VM config 
+      $vm = New-AzVMConfig -VMName newscriptvm -VMSize Standard_D1
+ Step 4:
+$vm = Set-AzVMOperatingSystem `
+>> -VM $vm `
+>> -Windows `
+>> -ComputerName newscriptvm `
+>> -Credential $cred `
+>> -ProvisionVMAgent -EnableAutoUpdate
+
+ 
+ Step 5:
+  PS Azure:\> $vm = Set-AzVMSourceImage `
+>> -VM $vm `
+>> -PublisherName MicrosoftWindowsServer `
+>> -Offer WindowsServer `
+>> -Skus 2016-Datacenter `
+>> -Version latest
+Azure:/
+
+Step 6:
+We need to create a network interface in the vnet and go to properties and copy the id
+PS Azure:\> $vm
+
+
+Name            : newscriptvm
+HardwareProfile : {VmSize}
+OSProfile       : {ComputerName, AdminUsername, AdminPassword, WindowsConfiguration}
+StorageProfile  : {ImageReference}
+
+/subscriptions/807df8ca-ccd1-437c-88a4-8c6256dc8d14/resourceGroups/FirstRG/providers/Microsoft.Network/networkInterfaces/networksecuritytest625
+PS Azure:\> $vm
+
+
+Name            : newscriptvm
+HardwareProfile : {VmSize}
+NetworkProfile  : {NetworkInterfaces}
+OSProfile       : {ComputerName, AdminUsername, AdminPassword, WindowsConfiguration}
+StorageProfile  : {ImageReference, OsDisk}
+
+
+
+Step 7:
+new-azvm -ResourceGroupName FirstRG -Location CentralUs -VM $vm
+
+
