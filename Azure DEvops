@@ -1,0 +1,64 @@
+Migration to repo
+
+Step1: 
+git clone addressbook.git --bare
+step2:
+git push addressbook.git --mirror
+Commit/Pre-commit Hooks
+In bitbucket , with the ability of external pre-receive hook plugin , we make sure that  every file which is part of Git Commit  has a option 
+azure repo dont have option . azure can do through PR build
+
+For permission:
+* To sync the AD and have AD group just as LDAP 
+* set the permission for these group but not useers , also giving permission to a group and then don't deny permission seperately 
+
+Build agent:
+Maven
+Azure pipeline Agent executable
+Twistcli
+Azcli
+Helmcli
+kubectl
+java
+JQ
+unzip
+nodejs
+python
+
+Docker images
+  base image with Azure pipeline agent 
+  azureagent-jsb:1.0
+  dockerimage for nodejs
+* Deployed these build agent as kubernetes deployment and scaled them up
+To deploy any machine as agent
+   a)PAT_TOKEN
+   b)Agentpool
+   c)Azuredevopsurl
+   d)Agentname
+ In case if we want agent running on Docker
+  docker run -it -d -e AZ_Url=https://dev.azure.com/addressbook -e AZ_Token =<token> -e az_agent_name=dockeragent -e azp_pools=agent_name - v /var/run/docker.sock:/var/run/docker.sock azureagent:1.0
+  
+  * currently no of slave are ran simulataneously are 5 for more number of parallel builds . For more number of parallel build , the pricing changes .This should be considered when we want to run multiple build stage in parallel
+  
+* Added the capabilities for agent to segregate them for this purpose like for e.g using diff agent for  maven or nodejs build.If we chose to go with Dynamic scaling, we will need to have different pools for each type of agents
+* for Angular build we configured windows machine as one of Azure pipeline agent
+
+PAAS:
+PAT Token
+Azure registry
+Sonar
+Veracode
+TWISTLOCK
+SSH
+
+Branch Policies:
+ * Require minimum number of reviewer
+ * check for comment resolution
+ * Build validate -PR build.yaml reside in the same location of pipeline.yml - Build expiration is set as immediate when develop is update
+ *Flexibility to have Devops as approver
+ 
+ Azure pipeline:
+ ================
+ Create pipeline in GUI based then converted in to Yaml 
+ * stored the npmrc nd yarnc  and setings.xml as secred files
+ * Azure 
