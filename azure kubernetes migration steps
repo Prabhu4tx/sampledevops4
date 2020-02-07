@@ -1,0 +1,50 @@
+Prerequiste:
+When we migrating a application from one region to other region in AZure
+
+Convert the below module in yaml
+1) configmap
+2)secret
+3) ingress
+4)deployment
+5services
+6)Statefulset
+7)PVC
+Create File/Disks
+      1) Push application in storage
+      2)create a storage addressbook AND CREATE A FILE ADDRESS
+   3) SYNC THE DATA
+   4)create kubernetes resources
+   5)create secret
+   6) create pv
+   7)create pvc
+taskmanager disk:
+ 1)create snapshots
+ 2)create disk
+ 3) create storage account in target group
+ 4)migrate using script
+ steo5:
+ replace the secret with below parameter
+ sed -i '/^ createtimestamp:/d' secret_allpet.yaml
+ 4) submit the yaml to new cluster once the azure depedencies are done
+ 5)Check the ingress service account and create ingress service account if not existed
+ Create ingress load balancing rules
+ 1) frontip
+ 2)healthprobe 30014
+ 3 k8-agent -internal-lb-nb-ingress -dev -bp
+ 
+ Step6:
+ Deploy and scale deployments
+ step7:
+ run the same number of deployment as in source enviornment
+  kubectl get deployments -n ns | awk {'print $1} | xargs -I pod kubectl scale deployments pod -n ns --replicas=0
+  Step7:
+  Update the spinnaker or Helm server with new cluster configuration and create spinnaker pipeline 
+  
+  halconfig provider kubernetes account add k8s-ncnpe --kubeconfig /home.spinnaker/.kube/config  --context context name --docker-registeries registryname 
+  spinnaker hal config file
+  step10: physical jenkins slave with new kubeconfig update and update configmap job
+  
+  
+  
+ 
+ 
