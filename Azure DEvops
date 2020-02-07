@@ -61,4 +61,94 @@ Branch Policies:
  ================
  Create pipeline in GUI based then converted in to Yaml 
  * stored the npmrc nd yarnc  and setings.xml as secred files
- * Azure 
+ * Azure devops predefined variable docs
+ https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml
+ 
+ * create a variable group with all variable required for CI pipeline (like docker registry name and artifactoryname 
+ 
+ 1) set the variables
+   * configuring build number as an artifact version along with buildID
+   * Download repo.xml
+   3) Move setting.xml to MavenHome directory
+   4) Add SonarQube server
+   5) sonar qube analysis usng generated clover .xml( junit test result report as extension
+   6) Publish Sonar Analysis Report on Sonar and also on Azure Devops using extension
+   7) Break Build Using Sonar Build Breaker Plugin -it uses quality gates as threashold check when we configure only clover perdentagr check as part of this quality gate
+   8) Code compilation & publish artifacts
+   9) Build docker image
+   10) Twist lock scan Docker image
+   110 Push Docker image
+   12) Helm package and validate charts ( maven plugin)
+   13) Helm repository add (
+   14) Helm ChartPush - acr helm list -o table
+   15) copying below artifacts from workspace to a artifactorystaging directory 
+   i) DB script
+   ii) cassandra migrator po
+   3) SprintBoot jar
+   4) ENV config files
+   5) Helm Package chart
+   6)Publishing artifacts to drop from stagging directory
+   * Clovercheck was disabled as maven command nstead and it was enabled using sonar coverage
+   * Bash cript to get pom version anf build.finalname from sprintbootfile
+   * Not using default twistlock task - which doesnt have an option to not to break the build in case of vulnerabilities used a bash task
+   * Triggers have to be in Azurepipeline.yaml which ix present in develop abd not need to be added in all branch seperately.
+   * Parallel job build - Building some non-dependent task in parallel assuming that it would save time
+   * SonarAnalysis is being done as part of naven task
+   * HTML clover report generation is not possible now
+   * docker credentials were passed to the maven goal directly to build docker image using fbric8plugin
+   
+   * Spring Boot POM file should be added with below plugin so that it easy to build and package helm chart
+   * Helm chart doesnt support snapshot version . so develop branch generated helm chsrt will have chartversion- buildnumber  and master branch should be not having build number
+  Azure Deployment:
+  =====================
+  Any installation like nginx , tiller or any rolebindings/cluster role bindings can be handled through seperate pipleine of Azure devops
+  * Manual steps
+  * create  Namespace for Dev environment
+  * create entrypoint for addressbook app as secret
+  Created keystore as secret
+  * ingress was already created as part of ingress deployment 
+  * keytab,kerberos value,jwt created as before
+  * Created Serviceaccount and cluser rolebing for tiller access
+  * installed Tiller in kube-system
+  
+ Continous  Pipeline using Helm
+ * Download the artifacts which build pipeline for published
+ * Added common repo as one more artifact to use common-bvalues.yaml which has values specific to environment but common for all MS
+ * Set Chart Version - getting the value of build number and modifying it to remove snapshot
+ * DB change using maven task to exceute the cosmos and db details as maven
+ * initialize Helm client only and service account tiller
+ * Helm repo add - helm repo using az cli to the helm which is running on slave
+ * Deploy Helm charts 
+ * APIM operation creates apis in apim  
+ * Function tests which executes maven task for running executing the backend tests
+  
+  
+   
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
