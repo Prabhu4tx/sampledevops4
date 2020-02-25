@@ -1,0 +1,51 @@
+Concept of RBAC in Kubernetes:
+
+There are two ways of RBAC in Kubernetes
+1)Role level setup for RBAC 
+2) Cluster level setup of RBAC
+1) Role level setup:
+ 
+  This setup will be done in the namespace level . We have various namespace in kubernetes cluster (dev,qe,sit )
+  the role binding grants permissions defined in a role to a user or set of users (users,groups or service account)based on below Roles
+  1) read(QE) --> pod (get,list)
+  2) Read/Write( Devops/Contributor) -> pod(get,list,watch)
+  3) Read/Write/Modify/Delete(admin)(get,list,delete and modify)
+  so when we create a rolebinding . we need to add the user mail id for one of the above Roles
+  Role binding grants pod-reader role
+  
+  Sample yaml for Roles
+  
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: pod-reader
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+  
+  
+  Cluster Binding: 
+  administrators to define set of common roles for the entire cluster ,then reuse them to multiple namespace. this will have access to all the namespace in the cluster
+  
+  apiVersion: rbac.authorization.k8s.io/v1
+# This cluster role binding allows anyone in the "manager" group to read secrets in any namespace.
+kind: ClusterRoleBinding
+metadata:
+  name: read-secrets-global
+subjects:
+- kind: Group
+  name: manager # Name is case sensitive
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: secret-reader
+  apiGroup: rbac.authorization.k8s.io
+  
+  ou cannot modify which Role or ClusterRole a binding object refers to. Attempts to change the roleRef field of a binding object will result in a validation error. To change the roleRef field on an existing binding object, the binding object must be deleted and recreated. There are two primary reasons for this restriction:
+
+A binding to a different role is a fundamentally different binding. Requiring a binding to be deleted/recreated in order to change the roleRef ensures the full list of subjects in the binding is intended to be granted the new role (as opposed to enabling accidentally modifying just the roleRef without verifying all of the existing subjects should be given the new role’s permissions).
+Making roleRef immutable allows giving update permission on an existing binding object to a user, which lets them manage the list of subjects, without being able to change the role that is granted to those subjects.
+  
+  
