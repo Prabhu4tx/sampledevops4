@@ -1,0 +1,23 @@
+Issue:Ubuntu
+https://github.com/kubernetes/kubectl/issues/501
+
+root@kubemaster2exam:/var/lib/kubernetes# systemctl status kube-apiserver
+● kube-apiserver.service - Kubernetes API Server
+   Loaded: loaded (/etc/systemd/system/kube-apiserver.service; enabled; vendor preset: enabled)
+   Active: activating (auto-restart) (Result: exit-code) since Mon 2020-04-20 05:28:04 UTC; 185ms ago
+     Docs: https://github.com/kubernetes/kubernetes
+  Process: 49458 ExecStart=/usr/local/bin/kube-apiserver --advertise-address=10.1.0.8 --allow-privileged=true --apiserver-count=3 --audit-log
+ Main PID: 49458 (code=exited, status=1/FAILURE)
+
+Solution:
+echo "1" > /proc/sys/net/ipv4/ip_forward
+root@Kubemaster1exam:/home/prabhu4tx# sysctl net.ipv4.ip_forward=1
+net.ipv4.ip_forward = 1
+root@Kubemaster1exam:/home/prabhu4tx# vi /etc/sysctl.conf
+net.ipv4.ip_forward=1
+
+
+Centos:
+cat /proc/sys/net/bridge/bridge-nf-call-iptables
+
+
