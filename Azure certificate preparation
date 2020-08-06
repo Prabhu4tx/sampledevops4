@@ -1,0 +1,72 @@
+
+
+https://sameeraman.wordpress.com/2019/10/30/azure-private-link-vs-azure-service-endpoints/
+Pay attention to limitations when considering private link - for example, Key vault only allows 400 vaults per subscription if private link is used... that is a lot, but consideration for sharing secrets/access needs to be taken 
+From Gulzar to All panelists and other attendees: (10:50 AM)
+ webstorage852020.blob.core.windows.net	canonical name = webstorage852020.privatelink.blob.core.windows.net. webstorage852020.privatelink.blob.core.windows.net	canonical name = blob.mwh03prdstr01a.store.core.windows.net. Name:	blob.mwh03prdstr01a.store.core.windows.net Address: 52.239.236.228
+
+Pay attention to limitations when considering private link - for example, Key vault only allows 400 vaults per subscription if private link is used... that is a lot, but consideration for sharing secrets/access needs to be taken 
+From Gulzar to All panelists and other attendees: (10:50 AM)
+ webstorage852020.blob.core.windows.net	canonical name = webstorage852020.privatelink.blob.core.windows.net. webstorage852020.privatelink.blob.core.windows.net	canonical name = blob.mwh03prdstr01a.store.core.windows.net. Name:	blob.mwh03prdstr01a.store.core.windows.net Address: 52.239.236.228 
+ https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview?toc=/azure/storage/blobs/toc.json
+ docs for databox - https://azure.microsoft.com/en-us/services/databox/
+
+ https://docs.microsoft.com/en-us/answers/questions/46821/how-can-we-automatically-delete-page-blobs-from-az.html
+
+ https://docs.microsoft.com/en-us/azure/virtual-machines/windows/dedicated-hosts
+
+ https://docs.microsoft.com/en-us/azure/virtual-machines/windows/shared-image-galleries docs for availability zones - https://docs.microsoft.com/en-us/azure/availability-zones/az-overview#availability-zones 
+
+ - https://github.com/Azure/azure-quickstart-templates/blob/master/201-vm-copy-index-loops/azuredeploy.json
+
+  https://docs.microsoft.com/en-us/azure/key-vault/general/backup
+  ciraltos
+  docker:
+  https://docs.microsoft.com/en-us/dotnet/architecture/microservices/container-docker-introduction/docker-terminology
+
+  https://docs.microsoft.com/en-us/azure/container-instances/container-instances-overview aci container groups docs - https://docs.microsoft.com/en-us/azure/container-instances/container-instances-container-groups 
+  acr sku tiers - https://docs.microsoft.com/en-gb/azure/container-registry/container-registry-skus and features git repo with arm template - https://github.com/mikepfeiffer/node-express-azure 
+   https://docs.microsoft.com/en-us/azure/aks/concepts-scale#burst-to-azure-container-instances 
+
+
+   https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough
+
+
+   ===
+
+   n-tier-sql: https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/n-tier/n-tier-sql-server 
+From nicole to All panelists and other attendees: (1:37 PM)
+ This is also in the VNets FAQ - https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq#what-address-ranges-can-i-use-in-my-vnets
+
+
+https://docs.microsoft.com/en-us/azure/dns/dns-overview 
+From nicole to All panelists and other attendees: (1:51 PM)
+ and a quickstart for creating a public zone - https://docs.microsoft.com/en-us/azure/dns/dns-getstarted-portal
+
+VNET:
+ https://docs.microsoft.com/en-us/azure/virtual-network/security-overview
+
+network watcher - https://docs.microsoft.com/en-us/azure/network-watcher/network-watcher-monitoring-overview
+
+ https://www.microsoft.com/en-us/download/details.aspx?id=56519
+
+  https://docs.microsoft.com/en-us/azure/virtual-network/manage-route-table
+
+   This is a nice walkthrough for Azure FW and WM traffic - https://docs.microsoft.com/en-us/azure/firewall/tutorial-firewall-deploy-portal
+
+   https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/hub-spoke
+
+EXAm policy
+   https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpn-devices
+
+   https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-highlyavailable
+by pass internet
+EXPRESSS Route
+https://docs.microsoft.com/en-us/azure/expressroute/expressroute-introduction
+
+VNET role
+  https://docs.microsoft.com/en-us/azure/expressroute/expressroute-introduction
+  - https://docs.microsoft.com/en-us/azure/active-directory/authentication/concept-authentication-passwordless#fido2-security-keys
+  https://docs.microsoft.com/en-us/azure/azure-government/documentation-government-overview-dod#what-is-the-difference-between-azure-government-and-the-azure-government-dod-regions
+
+  https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy#zone-redundant-storage
