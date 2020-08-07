@@ -1,0 +1,13 @@
+Istio System setup in AKS
+
+ISTIO_VERSION=1.4.0
+
+curl -sL "https://github.com/istio/istio/releases/download/$ISTIO_VERSION/istio-$ISTIO_VERSION-osx.tar.gz" | tar xz
+cd istio-$ISTIO_VERSION
+sudo cp ./bin/istioctl /usr/local/bin/istioctl
+sudo chmod +x /usr/local/bin/istioctl
+
+
+1) Create a new namespace istio-system
+2) create a secret.yaml for Grafana
+3) Create secret.yaml for Kiali
