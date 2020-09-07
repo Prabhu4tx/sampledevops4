@@ -1,0 +1,7 @@
+$Credential = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $User,$pwd
+$User = "xxx@xxxx.onmicrosoft.com"
+$PWord = ConvertTo-SecureString -String "<Password>" -AsPlainText -Force
+$tenant = "<tenant id>"
+$subscription = "<subscription id>"
+$Credential = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $User,$PWord
+Connect-AzAccount -Credential $Credential -Tenant $tenant -Subscription $subscription
