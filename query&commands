@@ -111,3 +111,45 @@ detect(a>90, off=(when(b<1, '5m') or a<90)).publish('high cpu or host down')
 thresholds=const(timeseries=[{'key':{'service_type':'Production'},'value':90},{'key':{'service_type':'Infrastructure'},'value':85},{'key':{'service_type':'Testing'},'value':60}])
 a=data('cpu.utilization').percentile(95, by=['service_type'])
 detect(a>thresholds).publish('cpu service type multiple thresholds')
+
+
+
+========
+
+-----contents of raw.flow-------
+data('dem_latency').publish()
+-----------------------------
+
+$ signalflow --token YOUR_TOKEN --stop=30s < raw.flow
+
+$ signalflow --token YOUR_TOKEN --output=csv --start=-1h --stop=-0 <raw.flow >outputraw.csv
+
+
+********TASK 2 Stream processed data
+
+---------contents of proc.flow -------------
+data('dem_latency').mean(over='10s').percentile(99,by='dem_service').publish()
+--------------------------------------
+
+$ signalflow --token YOUR_TOKEN  --start=30s < proc.flow
+
+$ signalflow --token YOUR_TOKEN  --start=-1h --stop=-0< proc.flow
+
+$ signalflow --token YOUR_TOKEN  --start=-1h --resolution=1200000 --stop=-0 < proc.flow
+
+$ signalflow --token YOUR_TOKEN  --start=-1h –-resolution=1200000 --stop=-0 --output=csv < proc.flow >outputproc.csv
+
+
+
+
+curl --request POST --header "X-SF-TOKEN: YOUR_ACCESS_TOKEN"  --header 'content-type: application/json' --url https://api.<REALM>.signalfx.com/v2/team  --data '{ name: "Name of team"}'
+
+**********TASK 2:	SOLUTION – ADD MEMBERS TO A TEAM.
+To get the member ID for a particular user using email
+curl --header "X-SF-TOKEN: YOUR_ACCESS_TOKEN" https://api.<REALM>.signalfx.com/v2/organization/member
+
+To get the member ID for a particular user using email
+curl --header "X-SF-TOKEN: YOUR_ACCESS_TOKEN" https://api.<REALM>.signalfx.com/v2/organization/member?query=email:EMAIL_ADDRESS
+
+To add members to a team
+curl --request PUT --header 'X-SF-TOKEN: YOUR_ACCESS_TOKEN' --header 'content-type: application/json' --url https://api.<REALM>.signalfx.com/v2/team/TEAM_ID  --data '{name: "UPDATED_TEAM_NAME", members: [ member ids go here]}'
