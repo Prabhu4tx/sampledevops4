@@ -1,0 +1,219 @@
+*********TASK 1: CREATE A DETECTOR.
+curl \
+  --request POST \
+  --header "X-SF-TOKEN: YOUR_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data-binary @- \
+  https://api.<REALM>.signalfx.com/v2/detector << EOF
+{
+  "name": "XXX Mean CPU on Canary hosts too high",
+  "programText": "detect(data('cpu.utilization',filter('sf_tags','iscanary')).mean() > 65).publish('XXX Mean CPU Canary above 65%')",
+  "rules": [{
+    "severity": "Critical",
+    "detectLabel": "XXX Mean CPU Canary above 65%"
+  }]
+}
+EOF
+
+*********LAB EXERCISE 6B*********
+*********TASK 3: CREATE MUTING RULE.
+Get the detector ID
+curl \
+  --request GET \
+  --header "X-SF-TOKEN: YOUR_TOKEN" \
+  https://api.signalfx.com/v2/detector?name=XXX
+Create muting rule
+curl \
+  --request POST \
+  --header "X-SF-TOKEN: YOUR_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data-binary @- \
+  https://api.<REALM>.signalfx.com/v2/alertmuting << EOF
+{
+  "startTime":START TIME IN MILLIS,
+  "stopTime": STOP TIME IN MILLIS,
+  "filters": [{"not": false, "property": "sf_detectorId", "propertyValue": "YOUR_DETECTOR_ID"}]
+}
+EOF
+
+************************************************************************
+*********LAB EXERCISE 6C*********
+PUTTING IT ALL TOGETHER
+************************************************************************
+*********COMPLETE CANARY VS NON_CANARY DASHBOARD
+Text note for non-canary hosts (NONCANARY_TEXTNOTE)
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_ noncanary hosts", "options" :{"type" : "Text","markdown":"All NON - Canary Charts"}}'  https://api.signalfx.com/v2/chart
+
+
+Number of non-canary hosts (NONCANARY_HOSTCOUNT)
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_Number of non-canary hosts", "options" :{"type" : "SingleValue"},"programText":"data(\"cpu.utilization\",filter=(not filter(\"sf_tags\", \"iscanary\"))).count().publish()"}'  https://api.signalfx.com/v2/chart
+
+Create chart to show cpu.utilization on non-canary hosts (NONCANARY_CPU)
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX CPU Utilization for NON Canary Hosts", "programText":"data(\"cpu.utilization\", filter=(not filter(\"sf_tags\", \"iscanary\"))).publish()"}'  https://api.signalfx.com/v2/chart
+
+Create chart to show mean cpu.utilization on non-canary hosts (NONCANARY_MEANCPU)
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX Mean CPU Utilization for NON Canary Hosts", "programText":"data(\"cpu.utilization\", filter=(not filter(\"sf_tags\", \"iscanary\"))).mean().publish()"}'  https://api.signalfx.com/v2/chart
+
+Add charts to dashboard
+With Filters
+curl --request PUT --header "X-SF-TOKEN:  YOUR_TOKEN" --header "Content-Type: application/json" --data '{"name": "Canary vs Non Canary","groupId": "DASH_GROUP_ID", "filters": {"sources": [{"property": "service_type", "value": "Production"}]}, "charts": [{"chartId":"TEXT_NOTE_ID","row":0, "column":0,"height":1,"width":1},{"chartId": "CHART_1_ID", "row": 0, "column": 2, "height": 1, "width": 3},{"chartId": "CHART_2_ID", "row": 0, "column": 4, "height": 1, "width": 4},{"chartId": "CHART_3_ID", "row": 0, "column":8, "height": 1, "width": 4},{"chartId":"NONCANARY_TEXTNOTE_ID","row":1, "column":1,"height":1,"width":1},{"NONCANARY_HOSTCOUNT_ID": "C6_AIpnAcAA", "row": 1, "column": 1, "height": 1, "width": 3},{"chartId": "NONCANARY_CPU_ID", "row": 1, "column": 4, "height": 1, "width": 4},{"chartId": "NONCANARY_MEANCPU_ID", "row": 1, "column":8, "height": 1, "width": 4}]}' https://api.signalfx.com/v2/dashboard/CANARY_V_NON_DASHBOARD_ID
+
+With Dashboard variables
+curl --request PUT --header "X-SF-TOKEN:  YOUR_TOKEN" --header "Content-Type: application/json" --data '{"name": "Canary vs Non Canary","groupId": "C6XPwH4AYAA", "filters": {"variables": [{"property": "service_type", "alias": "Service Type", "value":"Production"}]}, "charts": [{"chartId":"TEXT_NOTE_ID","row":0, "column":0,"height":1,"width":1},{"chartId": "CHART_1_ID", "row": 0, "column": 2, "height": 1, "width": 3},{"chartId": "CHART_2_ID", "row": 0, "column": 4, "height": 1, "width": 4},{"chartId": "CHART_3_ID", "row": 0, "column":8, "height": 1, "width": 4},{"chartId":"NONCANARY_TEXTNOTE_ID","row":1, "column":1,"height":1,"width":1},{"NONCANARY_HOSTCOUNT_ID": "C6_AIpnAcAA", "row": 1, "column": 1, "height": 1, "width": 3},{"chartId": "NONCANARY_CPU_ID", "row": 1, "column": 4, "height": 1, "width": 4},{"chartId": "NONCANARY_MEANCPU_ID", "row": 1, "column":8, "height": 1, "width": 4}]} ' https://api.signalfx.com/v2/dashboard/CANARY_V_NON_DASHBOARD_ID
+
+*********CREATE DATA CENTERS DASHBOARD
+
+Create text note for each datacenter
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_ Datacenter dc1", "options" :{"type" : "Text","markdown":"DC1 Charts"}}'  https://api.signalfx.com/v2/chart
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_ Datacenter dc2", "options" :{"type" : "Text","markdown":"DC2 Charts"}}'  https://api.signalfx.com/v2/chart
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_ Datacenter dc3", "options" :{"type" : "Text","markdown":"DC3 Charts"}}'  https://api.signalfx.com/v2/chart
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_ Datacenter dc4", "options" :{"type" : "Text","markdown":"DC4 Charts"}}'  https://api.signalfx.com/v2/chart
+
+Number of active hosts for each datacenter
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_Number of Hosts DC1", "options" :{"type" : "SingleValue"},"programText":"data(\"cpu.utilization\",filter=(filter(\"datacenter\", \"dc1\"))).count().publish()"}'  https://api.signalfx.com/v2/chart
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_Number of Hosts DC2", "options" :{"type" : "SingleValue"},"programText":"data(\"cpu.utilization\",filter=(filter(\"datacenter\", \"dc2\"))).count().publish()"}'  https://api.signalfx.com/v2/chart
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_Number of Hosts DC3", "options" :{"type" : "SingleValue"},"programText":"data(\"cpu.utilization\",filter=(filter(\"datacenter\", \"dc3\"))).count().publish()"}'  https://api.signalfx.com/v2/chart
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_Number of Hosts DC4", "options" :{"type" : "SingleValue"},"programText":"data(\"cpu.utilization\",filter=(filter(\"datacenter\", \"dc4\"))).count().publish()"}'  https://api.signalfx.com/v2/chart
+
+Host heatmap for each datacenter
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_Hosts DC1", "options" :{"type" : "Heatmap"},"programText":"data(\"cpu.utilization\",filter=(filter(\"datacenter\", \"dc1\"))).publish()"}'  https://api.signalfx.com/v2/chart
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_Hosts DC2", "options" :{"type" : "Heatmap"},"programText":"data(\"cpu.utilization\",filter=(filter(\"datacenter\", \"dc2\"))).publish()"}'  https://api.signalfx.com/v2/chart
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_Hosts DC3", "options" :{"type" : "Heatmap"},"programText":"data(\"cpu.utilization\",filter=(filter(\"datacenter\", \"dc3\"))).publish()"}'  https://api.signalfx.com/v2/chart
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX_Hosts DC4", "options" :{"type" : "Heatmap"},"programText":"data(\"cpu.utilization\",filter=(filter(\"datacenter\", \"dc4\"))).publish()"}'  https://api.signalfx.com/v2/chart
+
+P98 CPU each datacenter
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX P98 CPU DC1", "programText":"data(\"cpu.utilization\",filter=(filter(\"datacenter\", \"dc1\"))).percentile(98).publish()"}'  https://api.signalfx.com/v2/chart
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX P98 CPU DC2", "programText":"data(\"cpu.utilization\",filter=(filter(\"datacenter\", \"dc2\"))).percentile(98).publish()"}'  https://api.signalfx.com/v2/chart
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX P98 CPU D3", "programText":"data(\"cpu.utilization\",filter=(filter(\"datacenter\", \"dc3\"))).percentile(98).publish()"}'  https://api.signalfx.com/v2/chart
+
+curl --request POST --header "X-SF-TOKEN: YOUR_TOKEN" --header "Content-Type:application/json" --data '{ "name": "XXX P98 CPU DC4", "programText":"data(\"cpu.utilization\",filter=(filter(\"datacenter\", \"dc4\"))).percentile(98).publish()"}'  https://api.signalfx.com/v2/chart
+
+Create new dashboard
+
+curl --request POST --header "X-SF-TOKEN:  YOUR_TOKEN" --header "Content-Type: application/json" --data '{"name": "XXX Datacenters DB","groupId": "GROUP_ID", "charts": [{"chartId":"DC1_TEXT_NOTE_ID","row":0, "column":0,"height":1,"width":3}, {"chartId":"DC2_TEXT_NOTE_ID", "row": 1, "column": 0, "height": 1, "width": 3}, {"chartId":"DC3_TEXT_NOTE_ID", "row": 2, "column": 0, "height": 1, "width": 3}, {"chartId":"DC4_TEXT_NOTE_ID", "row": 3, "column":0, "height": 1, "width": 3}, {"chartId":"DC1_NUMHOSTS_ID","row":0, "column":3,"height":1,"width":3}, {"chartId":"DC2_NUMHOSTS_ID ", "row": 1, "column": 3, "height": 1, "width": 3}, {"chartId":"DC3_NUMHOSTS_ID", "row": 2, "column": 3, "height": 1, "width": 3}, {"chartId":"DC4_NUMHOSTS_ID", "row": 3, "column":3, "height": 1, "width": 3},{"chartId":"DC1_HEATMAP_ID","row":0, "column":6,"height":1,"width":3}, {"chartId":"DC2_HEATMAP_ID", "row": 1, "column": 6, "height": 1, "width": 3}, {"chartId":"DC3_HEATMAP_ID", "row": 2, "column": 6, "height": 1, "width": 3}, {"chartId":"DC4_HEATMAP_ID", "row": 3, "column":6, "height": 1, "width": 3} ,{"chartId":"DC1_P98CPU_ID","row":0, "column":9,"height":1,"width":3}, {"chartId":"DC2_P98CPU_ID", "row": 1, "column": 9, "height": 1, "width": 3}, {"chartId":"DC3_P98CPU_ID", "row": 2, "column": 9, "height": 1, "width": 3}, {"chartId":"DC4_P98CPU_ID", "row": 3, "column":9, "height": 1, "width": 3}]}' https://api.signalfx.com/v2/dashboard
+
+*********DETECTORS
+XXX_Mean CPU Canaries Differs from Non-canaries
+
+curl \
+  --request POST \
+  --header "X-SF-TOKEN:  YOUR_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data-binary @- \
+  https://api.signalfx.com/v2/detector << EOF
+{
+  "name": "XXX 10 Mean CPU Canary different from non-canary", 
+  "programText": "a=data('cpu.utilization', filter('sf_tags', 'iscanary')).mean() ; b=data('cpu.utilization',not filter('sf_tags','iscanary')).mean() ; c=abs(a-b) ; detect(c>0.001).publish('Mean CPU for canary is different from non-canary')",
+  "rules": [{
+    "severity": "Critical",
+    "detectLabel": "Mean CPU for canary is different from non-canary"
+  }]
+}
+EOF
+
+XXX_P98 CPU high in Datacenters
+
+curl \
+  --request POST \
+  --header "X-SF-TOKEN:  YOUR_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data-binary @- \
+  https://api.signalfx.com/v2/detector << EOF
+{
+  "name": "XXX P98 CPU high in Datacenters", 
+  "programText": "detect(data('cpu.utilization').percentile(98,by='datacenter')>85).publish('P98 CPU High by Datacenter')",
+  "rules": [{
+    "severity": "Critical",
+    "detectLabel": "P98 CPU High by Datacenter"
+  }]
+}
+EOF
+
+XXX_High CPU Host in a datacenter DC1
+
+curl \
+  --request POST \
+  --header "X-SF-TOKEN:  YOUR_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data-binary @- \
+  https://api.signalfx.com/v2/detector << EOF
+{
+  "name": "XXX high CPU host in DC1", 
+  "programText": "a=data('cpu.utilization', filter('datacenter', 'dc1')).mean(over='15s') ; b=data('cpu.utilization',filter('datacenter','dc1')).percentile(95) ; detect(when(a>85 and a>b,'5m')).publish('Host with High CPU in DC1')",
+  "rules": [{
+    "severity": "Critical",
+    "detectLabel": "Host with High CPU in DC1"
+  }]
+}
+EOF
+For other datacenters, substitute dc1 with other values.
+
+Detector with High CPU in different service types
+curl \
+  --request POST \
+  --header "X-SF-TOKEN:  YOUR_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data-binary @- \
+  https://api.signalfx.com/v2/detector << EOF
+{
+  "name": "XXX high CPU Different Service_Types", 
+  "programText": "thresholds=const(timeseries=[{'key':{'service_type':'Production'},'value':90},{'key':{'service_type':'Infrastructure'},'value':85},{'key':{'service_type':'Testing'},'value':60}]) ; a=data('cpu.utilization').percentile(95) ; detect(a>thresholds).publish('High CPU for different service types')",
+  "rules": [{
+    "severity": "Critical",
+    "detectLabel": "High CPU for different service types"
+  }]
+}
+EOF
+
+*********Overlay Event on Dashboard
+curl --request PUT --header "X-SF-TOKEN: YOUR TOKEN" --header "Content-Type: application/json" --data '{"name": "Canary vs Non Canary","groupId": "C6XPwH4AYAA", "filters": {"sources": [{"property": "service_type", "value": "Production"}]},"selectedEventOverlays" : [ {    "eventSignal" : {"eventSearchText" : "XXX Mean CPU Canary different from non-canary","eventType" : "detectorEvents"},"sources" : [ ]}],"charts" [{"chartId":"TEXT_NOTE_ID","row":0, "column":0,"height":1,"width":1},{"chartId": "CHART_1_ID", "row": 0, "column": 2, "height": 1, "width": 3},{"chartId": "CHART_2_ID", "row": 0, "column": 4, "height": 1, "width": 4},{"chartId": "CHART_3_ID", "row": 0, "column":8, "height": 1, "width": 4},{"chartId":"NONCANARY_TEXTNOTE_ID","row":1, "column":1,"height":1,"width":1},{"NONCANARY_HOSTCOUNT_ID": "C6_AIpnAcAA", "row": 1, "column": 1, "height": 1, "width": 3},{"chartId": "NONCANARY_CPU_ID", "row": 1, "column": 4, "height": 1, "width": 4},{"chartId": "NONCANARY_MEANCPU_ID", "row": 1, "column":8, "height": 1, "width": 4}]}' https://api.signalfx.com/v2/dashboard/C6bYtFsAYAE
+
+*********BONUS
+
+Handling cyclic data
+curl \
+  --request POST \
+  --header "X-SF-TOKEN:  YOUR_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data-binary @- \
+  https://api.signalfx.com/v2/detector << EOF
+{
+  "name": "XXX Cyclic Detector", 
+  "programText": "x=data('cpu.utilization').mean(over='30s').percentile(95) ; a=data('cpu.utilization').timeshift('1d').mean(over='30s').percentile(95) ; b=data('cpu.utilization').timeshift('2d').mean(over='30s').percentile(95) ; c=data('cpu.utilization').timeshift('3d').mean(over='30s').percentile(95) ; d=data('cpu.utilization').timeshift('4d').mean(over='30s').percentile(95) ; e=data('cpu.utilization').timeshift('5d').mean(over='30s').percentile(95) ; f=mean(a,b,c,d,e) ; g= abs(x-1.5*f) ; detect(g>0).publish('current P98 greater or less than 15% of last 5 time periods')",
+  "rules": [{
+    "severity": "Critical",
+    "detectLabel": "current P98 greater or less than 15% of last 5 time periods"
+  }]
+}
+EOF
+
+Custom Clearing condition
+
+curl \
+  --request POST \
+  --header "X-SF-TOKEN:  YOUR_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data-binary @- \
+  https://api.signalfx.com/v2/detector << EOF
+{
+  "name": "XXX Memory too high", 
+  "programText": "a=data('memory.utilization').mean(over='30s') ; detect(when(a >60,'5m'),off=when(a<20,'5m')).publish('memory too high')",
+  "rules": [{
+    "severity": "Critical",
+    "detectLabel": "memory too high"
+  }]
+}
+EOF
