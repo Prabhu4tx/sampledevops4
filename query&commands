@@ -1,0 +1,113 @@
+buntu@ip-10-0-3-87:~/Automation-LabFiles/Solutions$ cat Module2Solutions
+
+************ LAB EXERCISE MODULE 2 SOLUTIONS *************
+
+SUBSTITUTE YOUR TOKEN
+**********************************************************************************
+LAB EXERCISE 2b - PERFORM COMPLEX SIGNALFLOW COMPUTATIONS
+**********************************************************************************
+********TASK 2
+signalflow --token <YOUR_TOKEN>
+
+If your realm is different from us0, use the following to launch SignalFlow: 
+signalflow --token <ACCESS_TOKEN>  --api- endpoint="https://api.<REALM>.signalfx.com" --stream- endpoint="https://stream.<REALM>.signalfx.com"
+
+
+********LAB EXERCISE 2c - APPLY FILTERS********
+********TASK 3
+Number of active hosts in datacenter dc1
+data('cpu.utilization',filter=filter('datacenter','dc1')).count().publish()
+
+Mean cpu .utilization aggregated across all non-canary hosts
+data('cpu.utilization',filter=(not filter('sf_tags','isCanary'))).mean().publish()
+
+********LAB EXERCISE 2d - ANALYTICS AND COMBINE PLOTS********
+********TASK 4
+
+Difference between mean cpu.utilization across canary hosts and mean cpu.utilization across non-canary hosts
+(data('cpu.utilization',filter=filter('sf_tags','isCanary')).mean()-data('cpu.utilization',filter=(not filter('sf_tags','isCanary'))).mean()).publish()
+
+Find the absolute value of the difference
+(data('cpu.utilization',filter=filter('sf_tags','isCanary')).mean()-data('cpu.utilization',filter=(not filter('sf_tags','isCanary'))).mean()).abs().publish()
+
+Find the average of the 95th percentile of cpu.utilization for all hosts from each of the last 5 days
+i.e.Mean of  95th percentile for yesterday, the day before, etc. 
+
+a=data('cpu.utilization').timeshift('1d').percentile(95)
+b=data('cpu.utilization').timeshift('2d').percentile(95)
+c=data('cpu.utilization').timeshift('3d').percentile(95)
+d=data('cpu.utilization').timeshift('4d').percentile(95)
+e=data('cpu.utilization').timeshift('5d').percentile(95)
+mean(a,b,c,d,e).publish()
+
+Find the rate of change in the 90th percentile of memory utilization compared to a day ago
+a=data('memory.utilization').percentile(90)
+b=data('memory.utilization').timeshift('1d').percentile(90)
+c=(a-b)*100/a
+c.publish()
+
+Find the number of non-canary hosts in datacenter dc1
+a=data('cpu.utilization', filter=filter('datacenter','dc1')).count()
+a.publish()
+
+Find the mean latency (dem_latency) across all customers and services over the last 24 hours
+a = data('dem_latency').mean().mean(over='1d')
+a.publish()
+
+********LAB EXERCISE 2e - DETECT ANOMALIES ********
+********TASK 5
+
+
+Mean CPU Utilization aggregated across canary hosts > 90
+a=data('cpu.utilization',filter=filter('sf_tags','isCanary')).mean()
+detect(a>90).publish('CPU Canary Hosts > 90')
+
+Mean CPU Utilization aggregated across canary hosts > mean CPU Utilization across non-canary hosts
+a=data('cpu.utilization',filter=filter('sf_tags','isCanary')).mean()
+b=data('cpu.utilization',filter=(not filter('sf_tags','isCanary'))).mean()
+detect(a>b).publish('Mean CPU Canary > mean CPU non-canary')
+
+Is mean CPU Utilization across canary hosts different from mean CPU utilization for non-canary hosts
+a=data('cpu.utilization',filter=filter('sf_tags','isCanary')).mean()
+b=data('cpu.utilization',filter=(not filter('sf_tags','isCanary'))).mean()
+c=abs(a-b)
+detect(c>0.001).publish('Mean CPU for canary is different from non-canary')
+
+You can also enter to alert if this is different by a certain amount
+detect(c>10).publish('Mean cpu canary different from non-canary by 10%')
+
+Cyclic data - is P98 of cpu is 15% greater or less than mean of P98 of previous 5 time periods
+x=data('cpu.utilization').percentile(95)
+a=data('cpu.utilization').timeshift('1d').percentile(95)
+b=data('cpu.utilization').timeshift('2d').percentile(95)
+c=data('cpu.utilization').timeshift('3d').percentile(95)
+d=data('cpu.utilization').timeshift('4d').percentile(95)
+e=data('cpu.utilization').timeshift('5d').percentile(95)
+f=mean(a,b,c,d,e)
+g= abs(x-1.5*f)
+detect(g>0.01).publish('current P98 greater or less than 15% of last 5 time periods')
+
+********LAB EXERCISE 2F - SEND EVENTS CONDITIONALLY********
+********TASK 6
+
+Custom clearing condition - fire when memory > 60% for 5 minutes, clear when memory <20 for at least 5 minutes
+a=data('memory.utilization')
+detect(when(a >60,'5m'),off=when(a<20,'5m')).publish('memory too high')
+
+********TASK 7
+AND/OR   If cpu.utilization for a host in a data center is above 75 and above p98
+a=data('cpu.utilization',filter=filter('datacenter','dc1'))
+b=data('cpu.utilization',filter=filter('datacenter','dc1')).percentile(98)
+detect(a>75 and a>b).publish()
+
+Custom off condition with OR  If CPU goes above a value fire; clear if host down or value goes below threshold
+a=data('cpu.utilization')
+b=data('cpu.utilization').count(by=['host'])
+detect(a>90, off=(when(b<1, '5m') or a<90)).publish('high cpu or host down')
+
+********LAB EXERCISE 2g - MULTIPLE THRESHOLDS********
+********TASK 8
+
+thresholds=const(timeseries=[{'key':{'service_type':'Production'},'value':90},{'key':{'service_type':'Infrastructure'},'value':85},{'key':{'service_type':'Testing'},'value':60}])
+a=data('cpu.utilization').percentile(95, by=['service_type'])
+detect(a>thresholds).publish('cpu service type multiple thresholds')
