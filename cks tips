@@ -1,1 +1,8 @@
 RBAC
+Scenario1:
+
+pod 1: pod-watch
+pod : svc-watch pod
+Create a sa with appropriate permissions for the pod-watch pod
+Create a Service Account with appropriate permissions for the svc watch pod
+Delete the old shared SA
